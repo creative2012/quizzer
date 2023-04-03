@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { BsGenderMale, BsGenderFemale, BsGenderTrans } from 'react-icons/bs';
 import { Button } from '@mui/material';
 
 
@@ -35,59 +34,42 @@ const Answers: React.FC<QuestionsProps> = ({ onClick, delay, answers, keyValue }
       >
         <>
           {answers[0] && (
-            <Button
+            <div
               key={'A' + keyValue + 1}
               onClick={() => onClick(answers[0])}
-              value={answers[0]}
-              variant='contained'
-              className='group noTrans text-xl relative flex flex-row gap-2 items-center shadow-md p-4 rounded-md bg-[#455a64]  text-white hover:shadow-lg transition transform hover:scale-110'
+              
+              className='group hover:bg-blue-500 cursor-pointer noTrans text-xl relative flex flex-row gap-2 items-center justify-center shadow-md p-4 rounded-md bg-[#455a64]  text-white hover:shadow-lg transition transform hover:scale-110'
             >
               <div className="absolute left-4 font-bold">A</div> {answers[0]}
-            </Button>
+            </div>
           )}
           {answers[1] && (
-            <Button
+            <div
               key={'B' + keyValue + 1}
               onClick={() => onClick(answers[1])}
-              value={answers[1]}
-              variant='contained'
-              className='group noTrans text-xl relative flex flex-col gap-2 items-center  shadow-md p-4 rounded-md bg-[#455a64]  text-white hover:shadow-lg transition transform hover:scale-110'
+              
+              className='group hover:bg-blue-500  cursor-pointer noTrans text-xl relative flex flex-row gap-2 items-center justify-center shadow-md p-4 rounded-md bg-[#455a64]  text-white hover:shadow-lg transition transform hover:scale-110'
             >
              <div className="absolute left-4 font-bold">B</div>  {answers[1]}
-            </Button>
+            </div>
           )}
           {answers[2] && (
-            <Button
+            <div
               key={'C' + keyValue + 1}
               onClick={() => onClick(answers[2])}
-              value={answers[2]}
-              variant='contained'
-              className='group noTrans text-xl relative flex flex-col gap-2 items-center  shadow-md p-4 rounded-md bg-[#455a64]  text-white hover:shadow-lg transition transform hover:scale-110'
+              className='group hover:bg-blue-500  cursor-pointer noTrans text-xl relative flex flex-row gap-2 items-center justify-center shadow-md p-4 rounded-md bg-[#455a64]  text-white hover:shadow-lg transition transform hover:scale-110'
             >
               <div className="absolute left-4 font-bold">C</div> {answers[2]}
-            </Button>
+            </div>
           )}
           {answers[3] && (
-            <Button
+            <div
               key={'D' + keyValue + 1}
               onClick={() => onClick(answers[3])}
-              value={answers[3]}
-              variant='contained'
-              className='group noTrans text-xl relative flex flex-col gap-2 items-center  shadow-md p-4 rounded-md bg-[#455a64]  text-white hover:shadow-lg transition transform hover:scale-110'
+              className='group hover:bg-blue-500  cursor-pointer noTrans text-xl relative flex flex-row gap-2 items-center justify-center shadow-md p-4 rounded-md bg-[#455a64]  text-white hover:shadow-lg transition transform hover:scale-110'
             >
               <div className="absolute left-4 font-bold">D</div> {answers[3]}
-            </Button>
-          )}
-          {!answers[0] && (
-            <Button
-              key={'E' + keyValue + 1}
-              onClick={() => onClick('get')}
-              value='get'
-              variant='contained'
-              className='group flex flex-col gap-2 items-center  shadow-md p-4 rounded-md bg-[#455a64]  text-white hover:shadow-lg transition transform hover:scale-110'
-            >
-              Get Results
-            </Button>
+            </div>
           )}
         </>
       </motion.div>

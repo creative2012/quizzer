@@ -49,14 +49,15 @@ model Quiz {
     description  String
     videoUrl     String?
     thumbnailUrl String
+    level        String
     questions    Questions[]
     scores       Scores[]
 }
 
 model Questions {
-    id       String @id @default(auto()) @map("_id") @db.ObjectId
-    quizId   String @db.ObjectId
-    question  String @unique
+    id       String   @id @default(auto()) @map("_id") @db.ObjectId
+    quizId   String   @db.ObjectId
+    question String   @unique
     answers  String[]
     correct  String
 
@@ -64,9 +65,9 @@ model Questions {
 }
 
 model Scores {
-    id     String @id @default(auto()) @map("_id") @db.ObjectId
-    quizId String @db.ObjectId
-    userId String @db.ObjectId
+    id        String @id @default(auto()) @map("_id") @db.ObjectId
+    quizId    String @db.ObjectId
+    userId    String @db.ObjectId
     highScore Int
 
     quiz Quiz @relation(fields: [quizId], references: [id])

@@ -12,19 +12,21 @@ const QuizList: React.FC<QuizListProps> = ({ data, title }) => {
     return null;
   }
   return (
-  <div className="px-4 md:px-12 mt-4 space-y-8">
+    <>
+  <div className="px-4  mt-[200px] space-y-8 flex flex-row justify-center md:justify-normal w-screen lg:justify-normal h-screen">
     <div>
-        <p className="text-zinc-800 text-md md:text-xl lg:text-2xl font-semibold mb-4">
+        <p className=" text-2xl flex items-center justify-center font-semibold mb-8 mt-5 ">
             {title}
         </p>
-        <div className="flex flex-row  gap-2 justify-center md:justify-normal lg:justify-normal">
+        <div className="flex flex-row flex-wrap gap-8 justify-evenly">
             {data.map((quiz) => (
                 <QuizCard key={quiz.id} data={quiz}/>
             ))}
         </div>
     </div>
-
+              
   </div>
+  </>
   );
 };
 

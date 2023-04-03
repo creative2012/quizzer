@@ -1,11 +1,12 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Questions from '@/components/quiz/Questions';
 import { Button, LinearProgress } from '@mui/material';
 import Answers from '@/components/quiz/Answers';
 import { useRouter } from 'next/router';
 import useQuiz from '@/hooks/useQuiz';
 import { CircularProgress } from '@mui/material';
+import CountdownTimer from '@/components/quiz/CountDown';
 
 export default function Signup() {
   const router = useRouter();
@@ -13,62 +14,74 @@ export default function Signup() {
   const { data, isLoading } = useQuiz(quizId as string);
 
   const [start, setStart] = useState(false);
-  const [clock, setClock] = useState(-1);
-
+  const [timeLeft, setTimeLeft] = useState(100);
+  const [isRunning, setIsRunning] = useState(false);
+  const [answers, setAnswers] = useState<string[]>([]);
   const [delay, setDelay] = useState({
     title: 1.5,
-    question: 1.5,
-    options: 2,
+    question: 0.5,
+    options: 1,
   });
-
   const [progress, setProgress] = useState({
     tracker: 0,
     section: 0,
     question: 0,
   });
 
-  const [answers, setAnswers] = useState({
-    img: '',
-    answer: [],
-  });
-
   const startQuiz = () => {
-    setClock(3);
-    let cur = 3;
-    let timer = setInterval(() => {
-      setClock(cur - 1);
-      cur--;
-    }, 1000);
-    setTimeout(() => {
-      clearInterval(timer);
-      setStart(true);
-    }, 4000);
+    setStart(true);
+    setIsRunning(true);
   };
 
-  const handleOption = (e: any) => {
-    let nextQuestion = progress.question;
-    let nextSection = progress.section;
-    let tracker = progress.tracker;
+  useEffect(() => {
+    let intervalId: NodeJS.Timeout;
 
-    setAnswers((prevState) => ({
-      ...prevState,
-      answer: prevState.answer.concat(e),
-    }));
-
-    if (delay.title === 1.5) {
-      setDelay({ title: 0, question: 0, options: 1 });
+    if (isRunning && timeLeft > 0) {
+      intervalId = setInterval(() => {
+        setTimeLeft((prevTime) => prevTime - 1);
+      }, 100);
     }
 
-    if (progress.question < data?.question.length - 1) {
-      nextQuestion += 1;
-    } else {
-      nextQuestion = 0;
-      // nextSection += 1;
-    }
-    tracker += 100 / (data?.question.length - 1);
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [isRunning, timeLeft]);
 
-    setProgress({ section: nextSection, tracker: tracker, question: nextQuestion });
-  };
+  const handleOption = useCallback(
+    (e: string) => {
+      setIsRunning(false);
+
+      let nextQuestion = progress.question;
+      let nextSection = progress.section;
+      let tracker = progress.tracker;
+
+      const newItem = e + (answers.length + 1);
+      setAnswers((prevItems) => [...prevItems, newItem]);
+
+      delay.question === 0.5 && { title: 0, question: 0, options: 1 };
+
+      if (progress.question < data?.question.length - 2) {
+        nextQuestion += 1;
+        setTimeLeft(105);
+        setIsRunning(true);
+      } else {
+        nextQuestion += 1;
+        setIsRunning(false);
+        // nextSection += 1;
+      }
+
+      tracker += 100 / (data?.question.length - 1);
+      setProgress({ section: nextSection, tracker: tracker, question: nextQuestion });
+    },
+    [answers.length, data?.question.length, delay.question, progress.question, progress.section, progress.tracker]
+  );
+
+  useEffect(() => {
+    if (timeLeft === 0) {
+      handleOption('timeOut');
+    }
+  }, [timeLeft, handleOption]);
+
   if (isLoading) {
     return (
       <div className='text-white flex flex-col items-center justify-center gap-4 h-screen w-screen'>
@@ -109,14 +122,13 @@ export default function Signup() {
             {/* profile image display */}
             <div className='flex flex-row items-center justify-center gap-4 font-semibold'>
               {/* profile picture */}
-              {answers.img && <div className='bg-white rounded-full h-[70px] w-[70px] shadow-xl'></div>}
               <div>Paul</div>
             </div>
           </motion.div>
         </div>
         {/* question Title */}
 
-        <div className='relative bg-[#fdfdfd] text-[#455a64] row-span-2 flex flex-col gap-6 items-center justify-center text-center p-4 shadow-md z-10'>
+        <div className='relative bg-[#fdfdfd] min-h-[220px] text-[#455a64] row-span-2 flex flex-col gap-6 items-center justify-center text-center p-4 shadow-md z-10'>
           {/* section title */}
           <AnimatePresence mode='wait'>
             <motion.div
@@ -138,34 +150,7 @@ export default function Signup() {
               className='text flex flex-col gap-4 text-5xl font-semibold Bebas '
             >
               {data?.title}
-              {!start && clock === -1 && (
-                <Button onClick={startQuiz} className='text-zinc-800 bg-white hover:text-white hover:scale-110 transition transform' variant='contained'>
-                  Start Quiz ?{' '}
-                </Button>
-              )}
-              {!start && clock !== -1 && (
-                <AnimatePresence mode='wait'>
-                  <motion.div
-                    key={clock}
-                    initial={{ opacity: 0, x: 10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{
-                      opacity: 0,
-                      x: -10,
-                      transition: { delay: 0, duration: 0.2, ease: 'easeInOut' },
-                    }}
-                    transition={{
-                      delay: 0,
-                      duration: 0.5,
-                      ease: 'easeInOut',
-                      type: 'spring',
-                      stiffness: 100,
-                    }}
-                  >
-                    {clock}
-                  </motion.div>
-                </AnimatePresence>
-              )}
+              {!start && <CountdownTimer initialTime={3} onComplete={startQuiz} />}
             </motion.div>
           </AnimatePresence>
 
@@ -177,12 +162,22 @@ export default function Signup() {
               question={data?.question[progress.question].question}
             />
           )}
+          <div className='absolute z-10 bottom-0 w-full'>
           <LinearProgress
-            key='a2'
+            key='timeLeft'
+            color='secondary'
+            variant='determinate'
+            value={timeLeft}
+          />
+          </div>
+          <div className='absolute z-10 top-0 w-full'>
+          <LinearProgress
+            key='progress'
+            color='primary'
             variant='determinate'
             value={progress.tracker}
-            className='absolute z-10 bottom-0 w-full'
           />
+          </div>
         </div>
 
         {/* answers */}

@@ -8,9 +8,6 @@ interface QuestionsProps {
   keyValue: number;
 }
 const Questions: React.FC<QuestionsProps> = ({ keyValue, delay, question }) => {
-  const key1 = keyValue;
-  const key2 = keyValue +1;
-  const key3 = keyValue +50;
   return (
     <AnimatePresence mode='wait'>
     <motion.div key={'Q'+ keyValue}
