@@ -1,65 +1,13 @@
+import useQuizList from '@/hooks/useQuizList';
+import QuizList from '@/components/QuizList';
+import { Button } from '@mui/material';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { useState } from 'react';
-import Questions from '@/components/quiz/Questions';
-import { LinearProgress } from '@mui/material';
-import Logo from '@/components/Logo';
-import Answers from '@/components/quiz/Answers';
 
-export default function Signup() {
-  const questions = [
-    {
-      title: 'Lets Get to know You',
-      question: ['What is your sex?', 'What is your Date of Birth?', 'Where are you from?', 'Lets see you!'],
-    },
 
-    {
-      title: 'All Done!',
-      question: ['Saving your selections...'],
-    },
-  ];
+export default function Home() {
+  const { data: quizzes } = useQuizList();
 
-  const [delay, setDelay] = useState({
-    title: 1.5,
-    question: 2,
-    options: 2.5,
-  });
-
-  const [progress, setProgress] = useState({
-    tracker: 10,
-    section: 0,
-    question: 0,
-  });
-
-  const [answers, setAnswers] = useState({
-    img: '',
-    answer: [],
-  });
-
-  const handleOption = (e: any) => {
-    let nextQuestion = progress.question;
-    let nextSection = progress.section;
-    let tracker = progress.tracker;
-    
-     setAnswers(prevState => ({
-      ...prevState,
-      answer: prevState.answer.concat(e)
-    }));
-
-    if (delay.title === 1.5) {
-      setDelay({ title: 0, question: 0, options: 1 });
-    }
-
-    if (progress.question < questions[progress.section].question.length - 1) {
-      nextQuestion += 1;
-    } else {
-      nextQuestion = 0;
-      nextSection += 1;
-    }
-    tracker += 9;
-    setProgress({ section: nextSection, tracker: tracker, question: nextQuestion });
-    console.log(e)
-  };
-  console.log(answers)
 
   return (
     <motion.div
@@ -67,87 +15,9 @@ export default function Signup() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.7, ease: 'easeInOut' }}
-      className='fixed grid grid-cols-1 grid-rows-8 text-zinc-800 bg-white w-[100vw] h-[100vh]'
+      className='fixed  text-zinc-700 bg-white w-[100vw] h-[100vh]'
     >
-      <div className='text-3xl flex flex-col items-center row-span-2 justify-center text-center z-10 bg-[#f25771]'>
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{
-            opacity: 0,
-            y: -50,
-            transition: { delay: 0, duration: 0.2, ease: 'easeInOut' },
-          }}
-          transition={{
-            delay: 0.8,
-            duration: 0.2,
-            ease: 'easeInOut',
-            type: 'spring',
-            stiffness: 100,
-          }}
-          className='flex flex-col gap-4 text-white'
-        >
-          <span className='Pacifico text-7xl'>Hello </span>
-          {/* profile image display */}
-          <div className='flex flex-row items-center justify-center gap-4 font-semibold'>
-            {/* profile picture */}
-            {answers.img && <div className='bg-white rounded-full h-[70px] w-[70px] shadow-xl'></div>}
-            <div>Paul</div>
-          </div>
-        </motion.div>
-      </div>
-      {/* question Title */}
-
-      <div className='relative bg-[#fdfdfd] text-[#455a64] row-span-1 flex flex-col gap-6 items-center justify-center text-center p-4 shadow-md z-10'>
-        {/* section title */}
-        <AnimatePresence mode='wait'>
-          <motion.div
-            key={questions[progress.section].title}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{
-              opacity: 0,
-              y: -30,
-              transition: { delay: 0, duration: 0.2, ease: 'easeInOut' },
-            }}
-            transition={{
-              delay: delay.title,
-              duration: 0.5,
-              ease: 'easeInOut',
-              type: 'spring',
-              stiffness: 100,
-            }}
-            className='text-5xl font-semibold Bebas'
-          >
-            {questions[progress.section].title}
-          </motion.div>
-        </AnimatePresence>
-        {/* questions */}
-
-        <Questions
-          keyValue={progress.question}
-          delay={delay.question}
-          question={questions[progress.section].question[progress.question]}
-        />
-
-        <LinearProgress
-          key='a2'
-          variant='determinate'
-          value={progress.tracker}
-          className='absolute z-10 bottom-0 w-full'
-        />
-      </div>
-
-      {/* answers */}
-      <div className='flex justify-center items-center row-span-2  z-10 '>
-        <Answers
-          delay={delay.options}
-          keyValue={progress.question}
-          question={questions[progress.section].question[progress.question]}
-          onClick={handleOption}
-        />
-      </div>
-      <Logo copyRight={false} display={'self-center h-[50px] text-black'} color={'#f25771'} />
+    <QuizList title="Quizzes" data={quizzes} />
     </motion.div>
   );
 }

@@ -1,0 +1,74 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "mongodb"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id             String    @id @default(auto()) @map("_id") @db.ObjectId
+    name           String
+    image          String?
+    email          String?   @unique
+    emailVerified  DateTime?
+    hashedPassword String?
+    createdAt      DateTime  @default(now())
+    updatedAt      DateTime  @updatedAt
+    favoriteIds    String[]  @db.ObjectId
+    sessions       Session[]
+    scores         Scores[]
+}
+
+model Session {
+    id           String   @id @default(auto()) @map("_id") @db.ObjectId
+    sessionToken String   @unique
+    userId       String   @db.ObjectId
+    expires      DateTime
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+    id         String   @id @default(auto()) @map("_id") @db.ObjectId
+    identifier String
+    token      String   @unique
+    expires    DateTime
+
+    @@unique([identifier, token])
+}
+
+model Quiz {
+    id           String      @id @default(auto()) @map("_id") @db.ObjectId
+    title        String      @unique
+    catagory     String
+    description  String
+    videoUrl     String?
+    thumbnailUrl String
+    questions    Questions[]
+    scores       Scores[]
+}
+
+model Questions {
+    id       String @id @default(auto()) @map("_id") @db.ObjectId
+    quizId   String @db.ObjectId
+    question  String @unique
+    answers  String[]
+    correct  String
+
+    quiz Quiz @relation(fields: [quizId], references: [id], onDelete: Cascade)
+}
+
+model Scores {
+    id     String @id @default(auto()) @map("_id") @db.ObjectId
+    quizId String @db.ObjectId
+    userId String @db.ObjectId
+    highScore Int
+
+    quiz Quiz @relation(fields: [quizId], references: [id])
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

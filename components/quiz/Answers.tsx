@@ -11,6 +11,10 @@ interface QuestionsProps {
   keyValue: number;
 }
 const Answers: React.FC<QuestionsProps> = ({ onClick, delay, answers, keyValue }) => {
+  if(!answers){
+    return null;
+  }
+
   return (
     <AnimatePresence mode='wait'>
       <motion.div
@@ -43,7 +47,7 @@ const Answers: React.FC<QuestionsProps> = ({ onClick, delay, answers, keyValue }
           )}
           {answers[1] && (
             <Button
-              key={'A' + keyValue + 1}
+              key={'B' + keyValue + 1}
               onClick={() => onClick(answers[1])}
               value={answers[1]}
               variant='contained'
@@ -54,7 +58,7 @@ const Answers: React.FC<QuestionsProps> = ({ onClick, delay, answers, keyValue }
           )}
           {answers[2] && (
             <Button
-              key={'A' + keyValue + 1}
+              key={'C' + keyValue + 1}
               onClick={() => onClick(answers[2])}
               value={answers[2]}
               variant='contained'
@@ -65,7 +69,7 @@ const Answers: React.FC<QuestionsProps> = ({ onClick, delay, answers, keyValue }
           )}
           {answers[3] && (
             <Button
-              key={'A' + keyValue + 1}
+              key={'D' + keyValue + 1}
               onClick={() => onClick(answers[3])}
               value={answers[3]}
               variant='contained'
@@ -76,7 +80,7 @@ const Answers: React.FC<QuestionsProps> = ({ onClick, delay, answers, keyValue }
           )}
           {!answers[0] && (
             <Button
-              key={'A' + keyValue + 1}
+              key={'E' + keyValue + 1}
               onClick={() => onClick('get')}
               value='get'
               variant='contained'
