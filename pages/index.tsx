@@ -3,7 +3,7 @@ import QuizList from '@/components/QuizList';
 import { motion } from 'framer-motion';
 import React, { useState } from 'react';
 import { CircularProgress } from '@mui/material';
-import { deepOrange, deepPurple } from '@mui/material/colors';
+import { deepOrange } from '@mui/material/colors';
 import Avatar from '@mui/material/Avatar';
 import { NextPageContext } from "next";
 import { signOut } from "next-auth/react";
@@ -15,6 +15,10 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Logout from '@mui/icons-material/Logout';
+import useQuizListLang from '@/hooks/useQuizListLang';
+import useQuizListDB from '@/hooks/useQuizListDB';
+import useQuizListLib from '@/hooks/useQuizListLib';
+import useQuizListFrame from '@/hooks/useQuizListFrame';
 
 export async function getServerSideProps(context: NextPageContext) {
   const session = await getSession(context);
@@ -35,7 +39,11 @@ export async function getServerSideProps(context: NextPageContext) {
 
 
 export default function Home() {
-  const { data: quizzes, isLoading } = useQuizList();
+  const { data: languages, isLoading: isLang} = useQuizListLang();
+  const { data: frameworks, isLoading: isFrame } = useQuizListFrame();
+  const { data: librarys, isLoading: isLib } = useQuizListLib();
+  const { data: databases, isLoading: isDB } = useQuizListDB();
+
   const { data } = useCurrentUser();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -54,9 +62,9 @@ export default function Home() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.7, ease: 'easeInOut' }}
-      className=' text-zinc-700 bg-[#49acaf]'
+      className=' text-zinc-700 bg-[#49acaf] min-h-screen'
     >
-       <div className="bg-zinc-800 flex flex-row justify-between items-center bg-opacity-0 backdrop-blur-sm w-screen fixed top-0 left-0 pt-8 pl-8 pb-2 pr-12 Bebas text-7xl text-white z-10">
+       <div className="bg-zinc-800 border-b-2 border-b-zinc-200 border-b-solid flex flex-row justify-between items-center bg-opacity-0 backdrop-blur-sm w-screen fixed top-0 left-0 pt-8 pl-8 pb-8 pr-12 Bebas text-7xl text-white z-10">
           {'{ QUIZZER. }'}
           <Tooltip title="Account settings">
           <IconButton
@@ -67,7 +75,7 @@ export default function Home() {
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
-          <Avatar className=" cursor-pointer" sx={{ bgcolor: deepOrange[500], width: 56, height: 56 }}>{data?.name.charAt(0)}</Avatar>
+          <Avatar className=" cursor-pointer border-2 border-white border-solid hover:border-4" sx={{ bgcolor: deepOrange[500], width: 56, height: 56 }}>{data?.name.charAt(0)}</Avatar>
           </IconButton>
           </Tooltip>
           <Menu
@@ -115,13 +123,18 @@ export default function Home() {
           </div>
 
   
-    {isLoading && (
-      <div className='text-black fixed flex flex-col items-center justify-center gap-4 h-screen w-screen'>
+    {isLang || isLib || isDB || isFrame && (
+      <div className='text-black fixed flex flex-col items-center justify-center z-50 gap-4 h-screen w-screen top-0 left-0'>
       <CircularProgress color='warning' size={34} />
       Loading...
     </div>
     )}
-    <QuizList title={"Tests"} data={quizzes} />
+    <div className="h-[150px]"></div>
+    <QuizList title={"Languages"} data={languages} />
+    <QuizList title={"Librarys"} data={librarys} />
+    <QuizList title={"Frameworks"} data={frameworks} />
+    <QuizList title={"Databases"} data={databases} />
+    <div className="h-[55px]"></div>
     <div className="bg-zinc-800 bg-opacity-0 backdrop-blur-sm w-screen text-center fixed bottom-0 pl-8 pr-8 pb-4 pt-4 left-0 Poppins text-sm md:text-md lg:text-md text-white z-10">
       &copy; Quizzer 2023
     </div>

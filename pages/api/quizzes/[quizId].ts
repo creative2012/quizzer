@@ -20,38 +20,38 @@ export default async function handler(
       throw new Error("Invalid ID");
     }
 
-    const quiz = await prismadb.questions.findMany({
+    const questions = await prismadb.questions.findMany({
       where: {
         quizId: quizId,
       
       },
     });
 
-    if (!quiz) {
-      throw new Error("Invalid ID");
+    if (!questions) {
+      throw new Error("No Questions Found");
     }
-    const title = await prismadb.quiz.findUnique({
+    questions.push(
+      
+      {
+        question: '',
+        answers: [],
+        correct: '',
+        id: "",
+        quizId: ""
+      },
+    
+)
+    const quiz = await prismadb.quiz.findUnique({
       where: {
         id: quizId,
       },
     });
-    quiz.push(
-      
-          {
-            question: '',
-            answers: [],
-            correct: '',
-            id: "",
-            quizId: ""
-          },
-        
-    )
-    if (!title) {
-      throw new Error("Invalid ID");
+    if (!quiz) {
+      throw new Error("No Quiz Found");
     }
     const result = {
-      title: title.title,
-      question: quiz
+      title: quiz.title,
+      question: questions
 
     }
     

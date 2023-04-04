@@ -6,20 +6,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method !== 'GET') {
     return res.status(405).end();
   }
-  
 
   try {
     // await serverAuth(req);
-    
+
     const quizzes = await prismadb.quiz.findMany({
-      orderBy: [
-        {
-          title: 'asc',
-        },
-        {
-          level: 'desc',
-        },
-      ],
+      where: {
+        catagory: 'Database',
+      },
     });
 
     return res.status(200).json(quizzes);

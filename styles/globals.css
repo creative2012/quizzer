@@ -37,3 +37,33 @@ body {
   font-family: 'Press Start 2P', cursive;
 
 }
+
+
+.custScroll-x::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: transparent;  
+}
+.custScroll-x::-webkit-scrollbar {
+  height: 5px;
+  padding-right: 5px;
+  background-color: white;
+}
+
+.custScroll-x::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #ff5722;
+}
+body::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: transparent;  
+}
+body::-webkit-scrollbar {
+  width: 5px;
+  padding-right: 5px;
+  background-color: white;
+}
+
+body::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #ff5722;
+}
