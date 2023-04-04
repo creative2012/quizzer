@@ -1,4 +1,3 @@
-import useQuizList from '@/hooks/useQuizList';
 import QuizList from '@/components/QuizList';
 import { motion } from 'framer-motion';
 import React, { useState } from 'react';
