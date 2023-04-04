@@ -222,7 +222,7 @@ export default function Auth() {
             </Form>
             <LoadingButton
               className={`relative -bottom-3 mb-3  ${
-                isLoading ? '-right-20' : '-right-24'
+                isLoading ? 'text-center' : '-right-24'
               } font-semibold transition hover:-translate-x-2 transform text-white hover:bg-transparent mr-2`}
               onClick={option === false ? login : register}
               loading={isLoading}

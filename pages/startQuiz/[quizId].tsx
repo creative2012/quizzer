@@ -8,6 +8,7 @@ import useQuiz from '@/hooks/useQuiz';
 import { CircularProgress } from '@mui/material';
 import CountdownTimer from '@/components/quiz/CountDown';
 import { GiLaurelsTrophy } from 'react-icons/gi';
+import useCurrentUser from '@/hooks/useCurrentUser';
 
 export default function Quiz() {
   const router = useRouter();
@@ -15,7 +16,7 @@ export default function Quiz() {
     query: { quizId },
   } = router;
   const { data, isLoading } = useQuiz(quizId as string);
-
+  const { data: user } = useCurrentUser();
   const [start, setStart] = useState(false);
   const [timeLeft, setTimeLeft] = useState(100);
   const [isRunning, setIsRunning] = useState(false);
@@ -149,7 +150,7 @@ export default function Quiz() {
           >
             <span className='Pacifico text-7xl'>Hello </span>
             <div className='flex flex-row items-center justify-center gap-4 font-semibold'>
-              <div>Paul</div>
+              <div>{user?.name}</div>
             </div>
           </motion.div>
         </div>
