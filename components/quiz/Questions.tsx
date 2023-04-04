@@ -36,15 +36,9 @@ const Questions: React.FC<QuestionsProps> = ({ keyValue, delay, question, gameOv
         <motion.div key={'Q'+ keyValue}
         initial={{ x: 50, opacity: 0 }}
         animate={{ x: 0,opacity: 1 }}
-        exit={{ x: -50 ,opacity: 0, transition:{
-          duration: 0.5,
-          ease: "easeInOut",
-          type: "spring",
-          stiffness: 260,
-          damping: 20,
-        } }}
+        exit={{ x: 50 ,opacity: 0,}}
         transition={{
-          delay: 1.5,
+          delay: 0,
           duration: 0.5,
           ease: "easeInOut",
           type: "spring",

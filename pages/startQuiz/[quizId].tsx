@@ -7,19 +7,9 @@ import { useRouter } from 'next/router';
 import useQuiz from '@/hooks/useQuiz';
 import { CircularProgress } from '@mui/material';
 import CountdownTimer from '@/components/quiz/CountDown';
+import { GiLaurelsTrophy } from 'react-icons/gi';
 
-interface Props {}
-
-interface QuizData {
-  title: string;
-  question: {
-    title: string;
-    options: string[];
-    correct: string;
-  }[];
-}
-
-export default function Signup(props: Props) {
+export default function Quiz() {
   const router = useRouter();
   const {
     query: { quizId },
@@ -32,6 +22,7 @@ export default function Signup(props: Props) {
   const [answers, setAnswers] = useState<string[]>([]);
   const [gameOver, setGameOver] = useState(false);
   const [points, setPoints] = useState(0);
+  const [medal, setMedal] = useState('white');
   const [delay, setDelay] = useState({
     title: 1.5,
     question: 0.5,
@@ -91,15 +82,28 @@ export default function Signup(props: Props) {
 
   useEffect(() => {
     if (gameOver) {
-      let newPoints = 0;
+      let totalQuestions = data?.question.length - 1;
+      let correctAnswers = 0;
 
       answers.map((answer, index) => {
         if (answer === data?.question[index].correct) {
-          newPoints++;
+          correctAnswers++;
         }
       });
 
-      setPoints(newPoints);
+      let percentageCorrect = (correctAnswers / totalQuestions) * 100;
+
+      if (percentageCorrect >= 90) {
+        setMedal('#FFD700');
+      } else if (percentageCorrect >= 70) {
+        setMedal('#C0C0C0');
+      } else if (percentageCorrect == 0) {
+        setMedal('white');
+      }else {
+        setMedal('#CD7F32');
+      }
+
+      setPoints(correctAnswers);
     }
   }, [answers, data?.question, gameOver]);
 
@@ -146,9 +150,7 @@ export default function Signup(props: Props) {
             className='flex flex-col gap-4 text-white'
           >
             <span className='Pacifico text-7xl'>Hello </span>
-            {/* profile image display */}
             <div className='flex flex-row items-center justify-center gap-4 font-semibold'>
-              {/* profile picture */}
               <div>Paul</div>
             </div>
           </motion.div>
@@ -188,7 +190,7 @@ export default function Signup(props: Props) {
               delay={delay.question}
               question={data?.question[progress.question].question}
               gameOver={gameOver}
-              msg={'Saving your results...'}
+              msg={'Quiz over! Well done'}
             />
           )}
           <div className='absolute z-10 bottom-0 w-full'>
@@ -213,31 +215,54 @@ export default function Signup(props: Props) {
           )}
           {gameOver && (
             <AnimatePresence mode='wait'>
-            <motion.div
-              key={data?.title}
-              initial={{ y: -30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{
-                opacity: 0,
-                y: -30,
-                transition: { delay: 0, duration: 0.2, ease: 'easeInOut' },
-              }}
-              transition={{
-                delay: 0.5,
-                duration: 0.5,
-                ease: 'easeInOut',
-                type: 'spring',
-                stiffness: 100,
-              }}
-              
-            >
-            <div key="1" className='flex- felx-col'>
-              <div key="2" className='text-center text-4xl Bebas'>Your got</div>
-              <div key="3" className='text-center'>
-                {points} out of {data?.question.length - 1} questions correct
-              </div>
-            </div>
-            </motion.div>
+              <motion.div
+                key={data?.title}
+                initial={{ y: -30, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{
+                  opacity: 0,
+                  y: -30,
+                  transition: { delay: 0, duration: 0.2, ease: 'easeInOut' },
+                }}
+                transition={{
+                  delay: 2,
+                  duration: 0.5,
+                  ease: 'easeInOut',
+                  type: 'spring',
+                  stiffness: 100,
+                }}
+              >
+                <div key='1' className='flex flex-col gap-4'>
+                  <div key='2' className='text-center text-4xl Bebas'>
+                    Your got
+                  </div>
+                  <div key='3' className='text-center'>
+                    {points} out of {data?.question.length - 1} questions correct
+                  </div>
+                  {medal !== 'white' && (
+                    <motion.div
+                      key='trophy'
+                      initial={{ y: 50, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      exit={{
+                        opacity: 0,
+                        y: 50,
+                        transition: { delay: 0, duration: 0.2, ease: 'easeInOut' },
+                      }}
+                      transition={{
+                        delay: 3,
+                        duration: 0.5,
+                        ease: 'easeInOut',
+                        type: 'spring',
+                        stiffness: 100,
+                      }}
+                      className='self-center'
+                    >
+                      <GiLaurelsTrophy key='trophy2' color={medal} size={50} />
+                    </motion.div>
+                  )}
+                </div>
+              </motion.div>
             </AnimatePresence>
           )}
         </div>
