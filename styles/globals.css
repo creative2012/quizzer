@@ -24,9 +24,16 @@ body {
   font-family: 'Pacifico', cursive;
 
 }
+.Poppins{
+  font-family: 'Poppins', sans-serif;
+}
 .Bebas{
   font-family: 'Bebas Neue', cursive;
 }
 .noTrans{
   text-transform: none !important;
+}
+.Code{
+  font-family: 'Press Start 2P', cursive;
+
 }

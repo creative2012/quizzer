@@ -13,6 +13,10 @@ export default async function handler(
   try {
     const { email, name, password } = req.body;
 
+    if(!email || !name  || !password ){
+      return res.status(422).json({ error: "Username, email and password required" });
+    }
+
     const existingUser = await prismadb.user.findUnique({
       where: {
         email,

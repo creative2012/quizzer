@@ -129,7 +129,7 @@ export default function Quiz() {
         transition={{ duration: 0.7, ease: 'easeInOut' }}
         className='fixed grid grid-cols-1 grid-rows-8 text-zinc-800 bg-white w-[100vw] h-[100vh]'
       >
-        <div className='text-3xl flex flex-col items-center row-span-1 justify-center text-center z-10 bg-[#f25771]'>
+        <div className='text-3xl flex flex-col items-center row-span-1 justify-center text-center z-10 bg-[#49acaf]'>
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -232,7 +232,7 @@ export default function Quiz() {
               >
                 <div key='1' className='flex flex-col gap-4'>
                   <div key='2' className='text-center text-4xl Bebas'>
-                    Your got
+                    You got
                   </div>
                   <div key='3' className='text-center'>
                     {points} out of {data?.question.length - 1} questions correct
@@ -265,7 +265,7 @@ export default function Quiz() {
           )}
         </div>
 
-        <div className='text-center relative bottom-1 self-center text-[#f25771] h-[50px] Bebas text-6xl'>QUIZZER.</div>
+        <div className='text-center relative bottom-4 self-center text-[#49acaf] h-[50px] Bebas text-6xl'>QUIZZER.</div>
       </motion.div>
     </>
   );

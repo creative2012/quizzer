@@ -1,12 +1,51 @@
 import useQuizList from '@/hooks/useQuizList';
 import QuizList from '@/components/QuizList';
 import { motion } from 'framer-motion';
-import React from 'react';
+import React, { useState } from 'react';
 import { CircularProgress } from '@mui/material';
+import { deepOrange, deepPurple } from '@mui/material/colors';
+import Avatar from '@mui/material/Avatar';
+import { NextPageContext } from "next";
+import { signOut } from "next-auth/react";
+import { getSession } from "next-auth/react";
+import useCurrentUser from '@/hooks/useCurrentUser';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import MenuItem from '@mui/material/MenuItem';
+import Menu from '@mui/material/Menu';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Logout from '@mui/icons-material/Logout';
+
+export async function getServerSideProps(context: NextPageContext) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/auth",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
+}
+
 
 
 export default function Home() {
   const { data: quizzes, isLoading } = useQuizList();
+  const { data } = useCurrentUser();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
 
   return (
     <>
@@ -15,12 +54,67 @@ export default function Home() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.7, ease: 'easeInOut' }}
-      className=' text-zinc-700 bg-white'
+      className=' text-zinc-700 bg-[#49acaf]'
     >
-       <div className=" fixed z-10 top-0 w-screen h-[100px] shadow-md bg-[#49acaf] flex items-center justify-center">
-    <div className='text-white Bebas text-8xl h-fit'>QUIZZER.</div>
+       <div className="bg-zinc-800 flex flex-row justify-between items-center bg-opacity-0 backdrop-blur-sm w-screen fixed top-0 left-0 pt-8 pl-8 pb-2 pr-12 Bebas text-7xl text-white z-10">
+          {'{ QUIZZER. }'}
+          <Tooltip title="Account settings">
+          <IconButton
+            onClick={handleClick}
+            size="small"
+            sx={{ ml: 2 }}
+            aria-controls={open ? 'account-menu' : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? 'true' : undefined}
+          >
+          <Avatar className=" cursor-pointer" sx={{ bgcolor: deepOrange[500], width: 56, height: 56 }}>{data?.name.charAt(0)}</Avatar>
+          </IconButton>
+          </Tooltip>
+          <Menu
+        anchorEl={anchorEl}
+        id="account-menu"
+        open={open}
+        onClose={handleClose}
+        onClick={handleClose}
+        PaperProps={{
+          elevation: 0,
+          sx: {
+            overflow: 'visible',
+            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+            mt: 1.5,
+            '& .MuiAvatar-root': {
+              width: 32,
+              height: 32,
+              ml: -0.5,
+              mr: 1,
+            },
+            '&:before': {
+              content: '""',
+              display: 'block',
+              position: 'absolute',
+              top: 0,
+              right: 14,
+              width: 10,
+              height: 10,
+              bgcolor: 'background.paper',
+              transform: 'translateY(-50%) rotate(45deg)',
+              zIndex: 0,
+            },
+          },
+        }}
+        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+      >
+        <MenuItem onClick={() => signOut()}>
+          <ListItemIcon >
+            <Logout fontSize="small" />
+          </ListItemIcon>
+          Logout
+        </MenuItem>
+      </Menu>
+          </div>
 
-    </div>
+  
     {isLoading && (
       <div className='text-black fixed flex flex-col items-center justify-center gap-4 h-screen w-screen'>
       <CircularProgress color='warning' size={34} />
@@ -28,9 +122,10 @@ export default function Home() {
     </div>
     )}
     <QuizList title={"Tests"} data={quizzes} />
-    <div className="h-[40px] text-white fixed bottom-0 w-screen bg-[#49acaf] flex items-center justify-center">
+    <div className="bg-zinc-800 bg-opacity-0 backdrop-blur-sm w-screen text-center fixed bottom-0 pl-8 pr-8 pb-4 pt-4 left-0 Poppins text-sm md:text-md lg:text-md text-white z-10">
       &copy; Quizzer 2023
     </div>
+    
     </motion.div>
     </>
   );

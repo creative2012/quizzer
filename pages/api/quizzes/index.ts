@@ -12,7 +12,18 @@ export default async function handler(
 
   try {
     // await serverAuth(req);
-    const quizzes = await prismadb.quiz.findMany();
+    const quizzes = await prismadb.quiz.findMany({
+      orderBy: [
+        {
+          title: 'asc',
+        },
+        {
+          level: 'desc',
+        },
+        
+
+      ],
+    });
 
     return res.status(200).json(quizzes);
   } catch (error) {

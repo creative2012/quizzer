@@ -41,9 +41,14 @@ export default async function handler(
             question: '',
             answers: [],
             correct: '',
+            id: "",
+            quizId: ""
           },
         
     )
+    if (!title) {
+      throw new Error("Invalid ID");
+    }
     const result = {
       title: title.title,
       question: quiz
