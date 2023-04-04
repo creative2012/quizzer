@@ -14,6 +14,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       where: {
         catagory: 'Library',
       },
+      orderBy: [
+        {
+          title: 'asc',
+        },
+        {
+          level: 'desc',
+        },
+      ],
+      
     });
 
     return res.status(200).json(quizzes);

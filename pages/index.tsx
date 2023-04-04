@@ -1,14 +1,13 @@
 import QuizList from '@/components/QuizList';
 import { motion } from 'framer-motion';
 import React, { useState } from 'react';
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, Divider } from '@mui/material';
 import { deepOrange } from '@mui/material/colors';
 import Avatar from '@mui/material/Avatar';
 import { NextPageContext } from 'next';
 import { signOut } from 'next-auth/react';
 import { getSession } from 'next-auth/react';
 import useCurrentUser from '@/hooks/useCurrentUser';
-import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
@@ -58,15 +57,14 @@ export default function Home() {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.7, ease: 'easeInOut' }}
-        className=' text-zinc-700 bg-[#49acaf] min-h-screen'
+        className=' text-zinc-700 Main min-h-screen'
       >
-        <div className='bg-zinc-800 text-zinc-800 shadow-md flex flex-row justify-between items-center bg-opacity-0 backdrop-blur-sm w-screen fixed top-0 left-0 pt-8 pl-8 pb-8 pr-12 Bebas text-7xl z-10'>
+        <div className=' whitespace-nowrap bg-zinc-800 text-zinc-800 shadow-md flex flex-row justify-between items-center bg-opacity-0 backdrop-blur-sm w-screen fixed top-0 left-0 pt-8 pl-4 pr-8 pb-8 lg:pr-12 lg:pl-8 md:pr-12 md:pl-8  Bebas text-7xl z-10'>
           {'{ QUIZZER. }'}
           <div className='text-2xl flex flex-row items-center gap-4 text-zinc-800'>
-            <div className='hover:scale-110 transition transform cursor-pointer text-white'>Quizzes</div>
-            <div className='hover:scale-110 transition transform cursor-pointer'>Awards</div>
-            <div className='hover:scale-110 transition transform cursor-pointer'>LeaderBoard</div>
-            <Tooltip title='Account settings'>
+            <div className='hover:scale-110 transition transform cursor-pointer text-white hidden md:block lg:block'>Quizzes</div>
+            <div className='hover:scale-110 transition transform cursor-pointer hidden md:block lg:block'>Awards</div>
+            <div className='hover:scale-110 transition transform cursor-pointer hidden md:block lg:block'>LeaderBoard</div>
               <IconButton
                 onClick={handleClick}
                 size='small'
@@ -82,7 +80,6 @@ export default function Home() {
                   {data?.name.charAt(0)}
                 </Avatar>
               </IconButton>
-            </Tooltip>
           </div>
           <Menu
             anchorEl={anchorEl}
@@ -119,6 +116,19 @@ export default function Home() {
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
           >
+            <div className="block md:hidden lg:hidden">
+            <MenuItem onClick={handleClose}>
+              Quizzes
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+              Awards
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+              LeaderBoard
+            </MenuItem>
+            <Divider />
+            </div>
+            
             <MenuItem onClick={() => signOut()}>
               <ListItemIcon>
                 <Logout fontSize='small' />
@@ -143,7 +153,7 @@ export default function Home() {
         <QuizList title={'Frameworks'} data={frameworks} />
         <QuizList title={'Databases'} data={databases} />
         <div className='h-[28px]'></div>
-        <div className='bg-zinc-800 text-zinc-800 bg-opacity-0 backdrop-blur-sm w-screen text-right fixed bottom-0 pl-8 pr-8 pb-4 pt-4 left-0 Poppins text-sm md:text-md lg:text-md z-10'>
+        <div className='bg-zinc-800 Bebas text-zinc-800 bg-opacity-0 backdrop-blur-sm w-screen text-right  text-xl fixed bottom-0 pl-8 pr-8 pb-4 pt-4 left-0  Poppins md:text-md lg:text-md z-10'>
           &copy; Quizzer 2023
         </div>
       </motion.div>

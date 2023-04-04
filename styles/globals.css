@@ -29,7 +29,12 @@ body {
   font-family: 'Press Start 2P', cursive;
 
 }
-
+.Main{
+  background-color: #49acaf;
+  opacity: 0.8;
+  background-size: 20px 20px;
+  background-image:  repeating-linear-gradient(to right, #5bb4b7, #5bb4b7 1px, #49acaf 1px, #49acaf);
+}
 
 .custScroll-x::-webkit-scrollbar-track {
   border-radius: 10px;
@@ -38,12 +43,12 @@ body {
 .custScroll-x::-webkit-scrollbar {
   height: 5px;
   padding-right: 5px;
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.342);
 }
 
 .custScroll-x::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  background-color: #ff8a65;
+  background-color: #ff896581;
 }
 body::-webkit-scrollbar-track {
   border-radius: 10px;
