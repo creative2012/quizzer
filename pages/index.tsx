@@ -63,8 +63,12 @@ export default function Home() {
       transition={{ duration: 0.7, ease: 'easeInOut' }}
       className=' text-zinc-700 bg-[#49acaf] min-h-screen'
     >
-       <div className="bg-zinc-800  shadow-md  flex flex-row justify-between items-center bg-opacity-0 backdrop-blur-sm w-screen fixed top-0 left-0 pt-8 pl-8 pb-8 pr-12 Bebas text-7xl text-white z-10">
+       <div className="bg-zinc-800 text-zinc-800 shadow-md flex flex-row justify-between items-center bg-opacity-0 backdrop-blur-sm w-screen fixed top-0 left-0 pt-8 pl-8 pb-8 pr-12 Bebas text-7xl z-10">
           {'{ QUIZZER. }'}
+          <div className="text-2xl flex flex-row items-center gap-4 text-zinc-800">
+            <div className="hover:scale-110 transition transform cursor-pointer text-white">Quizzes</div>
+            <div className="hover:scale-110 transition transform cursor-pointer">Awards</div>
+            <div className="hover:scale-110 transition transform cursor-pointer">LeaderBoard</div>
           <Tooltip title="Account settings">
           <IconButton
             onClick={handleClick}
@@ -73,10 +77,13 @@ export default function Home() {
             aria-controls={open ? 'account-menu' : undefined}
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
+            
           >
           <Avatar className=" cursor-pointer border-2 border-white border-solid hover:border-4" sx={{ bgcolor: deepOrange[500], width: 56, height: 56 }}>{data?.name.charAt(0)}</Avatar>
+          
           </IconButton>
           </Tooltip>
+          </div>
           <Menu
         anchorEl={anchorEl}
         id="account-menu"
@@ -134,7 +141,7 @@ export default function Home() {
     <QuizList title={"Frameworks"} data={frameworks} />
     <QuizList title={"Databases"} data={databases} />
     <div className="h-[28px]"></div>
-    <div className="bg-zinc-800 bg-opacity-0 backdrop-blur-sm w-screen text-right fixed bottom-0 pl-8 pr-8 pb-4 pt-4 left-0 Poppins text-sm md:text-md lg:text-md text-white z-10">
+    <div className="bg-zinc-800 text-zinc-800 bg-opacity-0 backdrop-blur-sm w-screen text-right fixed bottom-0 pl-8 pr-8 pb-4 pt-4 left-0 Poppins text-sm md:text-md lg:text-md z-10">
       &copy; Quizzer 2023
     </div>
     
