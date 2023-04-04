@@ -64,7 +64,7 @@ export default function Home() {
       transition={{ duration: 0.7, ease: 'easeInOut' }}
       className=' text-zinc-700 bg-[#49acaf] min-h-screen'
     >
-       <div className="bg-zinc-800 border-b-2 border-b-zinc-200 border-b-solid flex flex-row justify-between items-center bg-opacity-0 backdrop-blur-sm w-screen fixed top-0 left-0 pt-8 pl-8 pb-8 pr-12 Bebas text-7xl text-white z-10">
+       <div className="bg-zinc-800  shadow-md  flex flex-row justify-between items-center bg-opacity-0 backdrop-blur-sm w-screen fixed top-0 left-0 pt-8 pl-8 pb-8 pr-12 Bebas text-7xl text-white z-10">
           {'{ QUIZZER. }'}
           <Tooltip title="Account settings">
           <IconButton
@@ -134,8 +134,8 @@ export default function Home() {
     <QuizList title={"Librarys"} data={librarys} />
     <QuizList title={"Frameworks"} data={frameworks} />
     <QuizList title={"Databases"} data={databases} />
-    <div className="h-[55px]"></div>
-    <div className="bg-zinc-800 bg-opacity-0 backdrop-blur-sm w-screen text-center fixed bottom-0 pl-8 pr-8 pb-4 pt-4 left-0 Poppins text-sm md:text-md lg:text-md text-white z-10">
+    <div className="h-[28px]"></div>
+    <div className="bg-zinc-800 bg-opacity-0 backdrop-blur-sm w-screen text-right fixed bottom-0 pl-8 pr-8 pb-4 pt-4 left-0 Poppins text-sm md:text-md lg:text-md text-white z-10">
       &copy; Quizzer 2023
     </div>
     

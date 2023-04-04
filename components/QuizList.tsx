@@ -13,7 +13,7 @@ const QuizList: React.FC<QuizListProps> = ({ data, title }) => {
   }
   return (
     <>
-  <div className="custScroll-x px-4 text-white space-y-8 flex flex-row justify-normal w-screen shadow-md pb-8 overflow-x-auto">
+  <div className="custScroll-x px-4 text-white space-y-8 flex flex-row justify-normal w-screen  pb-8 overflow-x-auto">
     <div>
         <p className="absolute left-8 text-2xl flex items-center justify-start font-light mb-4 mt-5 Bebas">
            {title}

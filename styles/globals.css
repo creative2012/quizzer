@@ -4,14 +4,6 @@
 
 :root{
   @apply h-full bg-zinc-800;
-  --brand-orange: #f27357;
-  --brand-orange-monochromatic: #EE4C28;
-  --brand-dark: #012e3f;
-  --brand-dark-lighter: #455a64;
-  --brand-pink: #F25788;
-  --brand-blue: #57D6F2;
-  --brand-green: #88F257;
-  --brand-purple: #C157F2;
 }
 
 body {
@@ -51,7 +43,7 @@ body {
 
 .custScroll-x::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  background-color: #ff5722;
+  background-color: #ff8a65;
 }
 body::-webkit-scrollbar-track {
   border-radius: 10px;
