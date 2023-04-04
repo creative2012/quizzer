@@ -8,15 +8,30 @@ import useQuiz from '@/hooks/useQuiz';
 import { CircularProgress } from '@mui/material';
 import CountdownTimer from '@/components/quiz/CountDown';
 
-export default function Signup() {
+interface Props {}
+
+interface QuizData {
+  title: string;
+  question: {
+    title: string;
+    options: string[];
+    correct: string;
+  }[];
+}
+
+export default function Signup(props: Props) {
   const router = useRouter();
-  const { quizId } = router.query;
+  const {
+    query: { quizId },
+  } = router;
   const { data, isLoading } = useQuiz(quizId as string);
 
   const [start, setStart] = useState(false);
   const [timeLeft, setTimeLeft] = useState(100);
   const [isRunning, setIsRunning] = useState(false);
   const [answers, setAnswers] = useState<string[]>([]);
+  const [gameOver, setGameOver] = useState(false);
+  const [points, setPoints] = useState(0);
   const [delay, setDelay] = useState({
     title: 1.5,
     question: 0.5,
@@ -24,7 +39,6 @@ export default function Signup() {
   });
   const [progress, setProgress] = useState({
     tracker: 0,
-    section: 0,
     question: 0,
   });
 
@@ -52,10 +66,9 @@ export default function Signup() {
       setIsRunning(false);
 
       let nextQuestion = progress.question;
-      let nextSection = progress.section;
       let tracker = progress.tracker;
 
-      const newItem = e + (answers.length + 1);
+      const newItem = e;
       setAnswers((prevItems) => [...prevItems, newItem]);
 
       delay.question === 0.5 && { title: 0, question: 0, options: 1 };
@@ -67,14 +80,28 @@ export default function Signup() {
       } else {
         nextQuestion += 1;
         setIsRunning(false);
-        // nextSection += 1;
+        setGameOver(true);
       }
 
       tracker += 100 / (data?.question.length - 1);
-      setProgress({ section: nextSection, tracker: tracker, question: nextQuestion });
+      setProgress({ tracker: tracker, question: nextQuestion });
     },
-    [answers.length, data?.question.length, delay.question, progress.question, progress.section, progress.tracker]
+    [data?.question, delay.question, progress.question, progress.tracker]
   );
+
+  useEffect(() => {
+    if (gameOver) {
+      let newPoints = 0;
+
+      answers.map((answer, index) => {
+        if (answer === data?.question[index].correct) {
+          newPoints++;
+        }
+      });
+
+      setPoints(newPoints);
+    }
+  }, [answers, data?.question, gameOver]);
 
   useEffect(() => {
     if (timeLeft === 0) {
@@ -160,29 +187,21 @@ export default function Signup() {
               keyValue={progress.question}
               delay={delay.question}
               question={data?.question[progress.question].question}
+              gameOver={gameOver}
+              msg={'Saving your results...'}
             />
           )}
           <div className='absolute z-10 bottom-0 w-full'>
-          <LinearProgress
-            key='timeLeft'
-            color='secondary'
-            variant='determinate'
-            value={timeLeft}
-          />
+            <LinearProgress key='timeLeft' color='secondary' variant='determinate' value={timeLeft} />
           </div>
           <div className='absolute z-10 top-0 w-full'>
-          <LinearProgress
-            key='progress'
-            color='primary'
-            variant='determinate'
-            value={progress.tracker}
-          />
+            <LinearProgress key='progress' color='primary' variant='determinate' value={progress.tracker} />
           </div>
         </div>
 
         {/* answers */}
         <div className='flex min-h-[300px] justify-center items-center row-span-2  z-10 '>
-          {start && (
+          {start && !gameOver && (
             <>
               <Answers
                 delay={delay.options}
@@ -191,6 +210,35 @@ export default function Signup() {
                 onClick={handleOption}
               />
             </>
+          )}
+          {gameOver && (
+            <AnimatePresence mode='wait'>
+            <motion.div
+              key={data?.title}
+              initial={{ y: -30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{
+                opacity: 0,
+                y: -30,
+                transition: { delay: 0, duration: 0.2, ease: 'easeInOut' },
+              }}
+              transition={{
+                delay: 0.5,
+                duration: 0.5,
+                ease: 'easeInOut',
+                type: 'spring',
+                stiffness: 100,
+              }}
+              
+            >
+            <div key="1" className='flex- felx-col'>
+              <div key="2" className='text-center text-4xl Bebas'>Your got</div>
+              <div key="3" className='text-center'>
+                {points} out of {data?.question.length - 1} questions correct
+              </div>
+            </div>
+            </motion.div>
+            </AnimatePresence>
           )}
         </div>
 

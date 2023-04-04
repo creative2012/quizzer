@@ -38,7 +38,7 @@ export default async function handler(
     quiz.push(
       
           {
-            question: 'Getting your results...',
+            question: '',
             answers: [],
             correct: '',
           },
