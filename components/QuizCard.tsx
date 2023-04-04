@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { SiJavascript, SiMongodb, SiReact, SiVuedotjs } from 'react-icons/si';
 import { TbBrandNextjs } from 'react-icons/tb';
 import Rating from '@mui/material/Rating';
+import { CircularProgress } from '@mui/material';
 
 interface QuizCardProps {
   data: Record<string, any>;
@@ -10,6 +11,7 @@ interface QuizCardProps {
 
 const QuizCard: React.FC<QuizCardProps> = ({ data }) => {
   const router = useRouter();
+  const [isLoading, setIsLoading ] = useState(false);
 
   let Img = SiMongodb;
   let col = 'blue';
@@ -44,17 +46,21 @@ const QuizCard: React.FC<QuizCardProps> = ({ data }) => {
     <div
       onClick={() => {
         router.push(`/startQuiz/${data?.id}`);
+        setIsLoading(true);
       }}
-      className='w-[300px] group text-xl flex flex-col gap-8 shadow-md p-4 bg-[#455d64] rounded-md cursor-pointer text-white hover:shadow-lg transition transform hover:scale-110'
+      className='w-[300px] group text-xl flex flex-col gap-8 shadow-md p-4 bg-[#6db6cc] rounded-md cursor-pointer text-white hover:shadow-lg transition transform hover:scale-110'
     >
       <div className='font-light text-xl self-end gap-2 overflow-hidden'>
         <Img className='absolute top-2 left-2' size={50} color={col} /> {data.title}
       </div>
       <div className='flex flex-col gap-1 self-start'>
-        <Rating name='read-only' size='small' value={level} readOnly />
+        <Rating  name='read-only' size='small' value={level} readOnly />
         <div className='text-xs font-light'>{data.level}</div>
       </div>
       <div className='absolute right-4 bottom-4 text-sm text-right w-full'>25 questions</div>
+      {isLoading && (
+      <CircularProgress thickness={7} color='inherit' size={34} className="absolute left-[45%] top-[35%]"/>
+     )}
     </div>
   );
 };

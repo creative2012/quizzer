@@ -65,15 +65,13 @@ export default function Quiz() {
       delay.question === 0.5 && { title: 0, question: 0, options: 1 };
 
       if (progress.question < data?.question.length - 2) {
-        nextQuestion += 1;
         setTimeLeft(105);
         setIsRunning(true);
       } else {
-        nextQuestion += 1;
         setIsRunning(false);
         setGameOver(true);
       }
-
+      nextQuestion += 1;
       tracker += 100 / (data?.question.length - 1);
       setProgress({ tracker: tracker, question: nextQuestion });
     },
