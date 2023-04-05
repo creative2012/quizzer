@@ -1,6 +1,14 @@
 import prismadb from "@/lib/prismadb";
 import { NextApiRequest, NextApiResponse } from "next";
+import shuffle from 'lodash/shuffle';
 // import serverAuth from "@/lib/serverAuth";
+interface Question {
+  question: string;
+  answers: string[];
+  correct: string;
+  id: string;
+  quizId: string;
+}
 
 export default async function handler(
   req: NextApiRequest,
@@ -30,7 +38,9 @@ export default async function handler(
     if (!questions) {
       throw new Error("No Questions Found");
     }
-    questions.push(
+    const shuffledQuestions = shuffle(questions);
+    const selectedQuestions = shuffledQuestions.slice(0, 15);
+    selectedQuestions.push(
       
       {
         question: '',
@@ -51,7 +61,7 @@ export default async function handler(
     }
     const result = {
       title: quiz.title,
-      question: questions
+      question: selectedQuestions
 
     }
     
