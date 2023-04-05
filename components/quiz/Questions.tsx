@@ -1,6 +1,5 @@
 import React from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { CircularProgress } from '@mui/material';
 
 interface QuestionsProps {
   delay: number;

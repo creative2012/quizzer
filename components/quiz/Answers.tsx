@@ -1,6 +1,5 @@
 import React from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { deepOrange } from '@mui/material/colors';
 
 interface AnswerProps {
   onClick: (e: any) => void;
