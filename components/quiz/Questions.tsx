@@ -8,6 +8,7 @@ interface QuestionsProps {
   keyValue: number;
   gameOver: boolean;
   msg: string;
+  isSaving: string;
 }
 const Questions: React.FC<QuestionsProps> = ({ keyValue, delay, question, gameOver, msg }) => {
   return (
@@ -45,9 +46,10 @@ const Questions: React.FC<QuestionsProps> = ({ keyValue, delay, question, gameOv
           stiffness: 260,
           damping: 20,
           }}
-          className="self-center text-2xl flex flex-row items-center gap-6"
+          className="self-center text-2xl flex flex-col items-center justify-center gap-6"
         >
-      {msg}  {msg === 'Saving your results...' &&(<CircularProgress key={'Q'+ keyValue+2} color='primary' size={24} /> )}
+      {msg} 
+      
       
       </motion.div>
       )}

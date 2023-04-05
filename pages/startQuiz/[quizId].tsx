@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { useState, useEffect, useCallback } from 'react';
 import Questions from '@/components/quiz/Questions';
-import { Button, LinearProgress } from '@mui/material';
+import { LinearProgress } from '@mui/material';
 import Answers from '@/components/quiz/Answers';
 import { useRouter } from 'next/router';
 import useQuiz from '@/hooks/useQuiz';
@@ -9,8 +9,22 @@ import { CircularProgress } from '@mui/material';
 import CountdownTimer from '@/components/quiz/CountDown';
 import { GiLaurelsTrophy } from 'react-icons/gi';
 import useCurrentUser from '@/hooks/useCurrentUser';
+import Snackbar from '@mui/material/Snackbar';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import axios from 'axios';
+
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref,
+) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 export default function Quiz() {
+  type SavingCode = 'success' | 'info' | 'warning' | 'error' | undefined;
+
   const router = useRouter();
   const {
     query: { quizId },
@@ -23,13 +37,17 @@ export default function Quiz() {
   const [isRunning, setIsRunning] = useState(false);
   const [answers, setAnswers] = useState<string[]>([]);
   const [gameOver, setGameOver] = useState(false);
+  const [isSaving, setisSaving] = useState<{ msg: string, code: SavingCode }>({
+    msg: '',
+    code:'info'
+  });
   const [points, setPoints] = useState(0);
   const [medal, setMedal] = useState('white');
-  const delay = {
+  const [delay, setDelay] = useState({
     title: 1.5,
     question: 0.5,
     options: 1,
-  };
+  });
   const [progress, setProgress] = useState({
     tracker: 0,
     question: 0,
@@ -39,6 +57,26 @@ export default function Quiz() {
     setStart(true);
     setIsRunning(true);
   };
+
+  const saveScore = useCallback(async () => {
+    setisSaving({msg:'Saving...',code:"info"});
+    setOpen(true);
+    try {
+      const response = await axios.post('/api/saveScore', {
+        score: points,
+      });
+      setTimeout(() => {
+        setisSaving({msg:'Saved!.',code:"success"});
+        setOpen(true);
+      }, 1000);
+    } catch (error) {
+      setTimeout(() => {
+        setisSaving({msg:'could not connect to Database',code:"error"});
+        setOpen(true);
+      }, 1000);
+      console.log(error);
+    }
+  }, [points]);
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
@@ -64,7 +102,7 @@ export default function Quiz() {
       const newItem = e;
       setAnswers((prevItems) => [...prevItems, newItem]);
 
-      delay.question === 0.5 && { title: 0, question: 0, options: 1 };
+      delay.question === 0.5 && setDelay({ title: 0, question: 0, options: 1 });
 
       if (progress.question < data?.question.length - 2) {
         setTimeLeft(105);
@@ -104,14 +142,35 @@ export default function Quiz() {
       }
 
       setPoints(correctAnswers);
+      setTimeout(() => {
+        saveScore();
+      }, 4000);
+      
     }
-  }, [answers, data?.question, gameOver]);
+  }, [answers, data?.question, gameOver, saveScore]);
+
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (timeLeft === 0) {
+      setTimeLeft(timeLeft + 2);
       handleOption('timeOut');
     }
   }, [timeLeft, handleOption]);
+  const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+  const action = (
+    <div>
+      <IconButton size='small' aria-label='close' color='inherit' onClick={handleClose}>
+        <CloseIcon fontSize='small' />
+      </IconButton>
+    </div>
+  );
 
   if (isLoading) {
     return (
@@ -191,6 +250,7 @@ export default function Quiz() {
               question={data?.question[progress.question].question}
               gameOver={gameOver}
               msg={'Quiz over! Well done'}
+              isSaving={isSaving.msg}
             />
           )}
           <div className='absolute z-10 bottom-0 w-full'>
@@ -269,6 +329,11 @@ export default function Quiz() {
 
         <div className='text-center relative bottom-4 self-center text-[#49acaf] h-[50px] Bebas text-6xl'>QUIZZER.</div>
       </motion.div>
+      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}  action={action}>
+          <Alert onClose={handleClose} severity={isSaving.code} sx={{ width: '100%' }}>
+          {isSaving.msg}
+          </Alert>
+        </Snackbar>
     </>
   );
 }

@@ -121,7 +121,7 @@ export default function Auth() {
   }, [email, name, password, login]);
 
   const [open, setOpen] = useState(false);
-  const [errorMsg, setOErrorMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
 
   const handleError = (e: any, t: string) => {
     let error;
@@ -133,7 +133,7 @@ export default function Auth() {
       error = e.error;
     }
 
-    setOErrorMsg(error);
+    setErrorMsg(error);
     setOpen(true);
   };
 

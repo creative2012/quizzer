@@ -13,7 +13,7 @@ const boxVariants = {
   initial: { opacity: 0 },
   animate: {
     opacity: 1,
-    transition: { staggerChildren: 0.7, ease: 'easeInOut', duration: 0.5 },
+    transition: { staggerChildren: 0.3, ease: 'easeInOut', duration: 0.5 },
   },
 };
 
@@ -25,10 +25,10 @@ const QuizList: React.FC<QuizListProps> = ({ data, title, loading }) => {
   return (
     <motion.div
       key={title}
-      initial={{ x: 50, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       exit={{
-        x: -50,
+        
         opacity: 0,
         transition: {
           duration: 0.5,
