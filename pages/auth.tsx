@@ -55,7 +55,7 @@ export default function Auth() {
         >
           <video {...videoOption}></video>
         </motion.div>
-        <header className='bg-transparent fixed top-8 left-8 Bebas  text-7xl text-white z-10'>{'{ QUIZZER. }'}</header>
+        <header className='bg-transparent fixed top-8 left-8 Bebas  text-7xl text-white z-10'><h1>{'{ QUIZZER. }'}</h1></header>
         <section>
          <LoginSignupElement />
         </section>
