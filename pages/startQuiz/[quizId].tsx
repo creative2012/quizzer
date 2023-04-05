@@ -16,7 +16,6 @@ import ShowPoints from '@/components/quiz/ShowPoints';
 import Hello from '@/components/quiz/Hello';
 import QuizTitle from '@/components/quiz/QuizTitle';
 
-
 export default function Quiz() {
   type SavingCode = 'success' | 'info' | 'warning' | 'error' | undefined;
 
@@ -187,15 +186,15 @@ export default function Quiz() {
         <Hello user={user} />
         <div className='relative bg-[#fdfdfd] min-h-[220px] text-[#455a64] row-span-2 flex flex-col gap-6 items-center justify-center text-center p-4 shadow-md z-10'>
           <QuizTitle data={data} start={start} delay={delay.title} startQuiz={startQuiz} />
-            <Questions
-              start={start}
-              keyValue={progress.question}
-              delay={delay.question}
-              question={data?.question[progress.question].question}
-              gameOver={gameOver}
-              msg={'Quiz over! Well done'}
-              isSaving={isSaving.msg}
-            />
+          <Questions
+            start={start}
+            keyValue={progress.question}
+            delay={delay.question}
+            question={data?.question[progress.question].question}
+            gameOver={gameOver}
+            msg={'Quiz over! Well done'}
+            isSaving={isSaving.msg}
+          />
           <div className='absolute z-10 bottom-0 w-full'>
             <LinearProgress key='timeLeft' color='secondary' variant='determinate' value={timeLeft} />
           </div>
