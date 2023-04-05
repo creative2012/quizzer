@@ -80,7 +80,7 @@ export default function Quiz() {
         const { question, ...rest } = shuffleData;
         const shuffledQuestions = [...question];
         
-        shuffledQuestions.sort(() => Math.random() - 0.5);
+        shuffledQuestions.sort(() => Math.random() - 0.5).slice(0, 15);
         shuffledQuestions.push({
           question: '',
           answers: [],
