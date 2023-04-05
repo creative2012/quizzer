@@ -28,7 +28,6 @@ const QuizList: React.FC<QuizListProps> = ({ data, title, loading }) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{
-        
         opacity: 0,
         transition: {
           duration: 0.5,
@@ -47,16 +46,18 @@ const QuizList: React.FC<QuizListProps> = ({ data, title, loading }) => {
         damping: 20,
       }}
     >
-      <div className='relative custScroll-x px-4 text-white space-y-8 flex flex-row justify-normal w-screen  pb-8 overflow-x-scroll'>
+      <div className='relative custScroll-x px-4 text-white space-y-8 flex flex-row  justify-normal w-screen  pb-8 overflow-x-scroll'>
         {loading && (
-          <div className='absolute w-full h-full  text-black flex flex-col items-center justify-center z-50 gap-4   top-0 left-0'>
+          <div className='absolute w-full h-full  text-black flex flex-col items-center justify-center z-50 gap-4 top-0 left-0'>
             <CircularProgress color='warning' size={34} />
             Loading...
           </div>
         )}
+        <p className='sticky  whitespace-nowrap w-[20px] left-8 pt-5 text-2xl flex self-start items-center justify-start font-light  Bebas'>
+          {title}
+        </p>
         <div>
-          <p className='absolute left-8 text-2xl flex items-center justify-start font-light mb-4 mt-5 Bebas'>{title}</p>
-          <div className='pt-16'></div>
+          <div className='relative pt-8 -left-10'></div>
           <motion.div
             variants={boxVariants}
             initial='initial'
@@ -66,6 +67,7 @@ const QuizList: React.FC<QuizListProps> = ({ data, title, loading }) => {
             {data.map((quiz) => (
               <QuizCard key={quiz.id} data={quiz} />
             ))}
+            <div className='w-[150px]'></div>
           </motion.div>
         </div>
       </div>
