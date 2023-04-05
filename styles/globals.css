@@ -48,7 +48,7 @@ body {
 
 .custScroll-x::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  background-color: #ff896581;
+  background-color: #ff8965;
 }
 body::-webkit-scrollbar-track {
   border-radius: 10px;

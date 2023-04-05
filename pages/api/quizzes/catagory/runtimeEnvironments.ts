@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const quizzes = await prismadb.quiz.findMany({
       where: {
-        catagory: 'Database',
+        catagory: 'Runtime Environment',
       },
       orderBy: [
         {
@@ -22,6 +22,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           level: 'desc',
         },
       ],
+      
     });
 
     return res.status(200).json(quizzes);

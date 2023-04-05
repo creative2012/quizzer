@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { SiJavascript, SiMongodb, SiReact, SiVuedotjs, SiPrisma, SiLaravel, SiJquery } from 'react-icons/si';
 import { TbBrandNextjs, TbBrandPython, TbBrandMysql } from 'react-icons/tb';
-import { FaPhp } from 'react-icons/fa';
+import { FaPhp, FaNodeJs } from 'react-icons/fa';
 import Rating from '@mui/material/Rating';
 import { CircularProgress } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -78,6 +78,10 @@ const QuizCard: React.FC<QuizCardProps> = ({ data }) => {
       Img = SiJquery;
       col = 'black';
       break;
+      case 'node':
+      Img = FaNodeJs;
+      col = 'black';
+      break;
 
     default:
       break;
@@ -96,11 +100,12 @@ const QuizCard: React.FC<QuizCardProps> = ({ data }) => {
       }
     >
       <div
+        key={data?.id}
         onClick={() => {
           router.push(`/startQuiz/${data?.id}`);
           setIsLoading(true);
         }}
-        className='w-[300px] group text-xl flex flex-col gap-8 shadow-md p-4 bg-white text-zinc-800 rounded-md cursor-pointer hover:shadow-lg transition transform hover:scale-110'
+        className='w-[250px]  md:w-[300px] lg:w-[300px]  group text-xl flex flex-col gap-8 shadow-md p-4 bg-white text-zinc-800 rounded-md cursor-pointer hover:shadow-lg transition transform hover:scale-110'
       >
         <div className='font-semibold text-xl self-end gap-2 overflow-hidden'>
           <Img className='absolute top-2 left-2' size={50} color={'#ff5722'} /> {data?.title}

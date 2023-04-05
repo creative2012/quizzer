@@ -68,7 +68,7 @@ const videoOption = {
   autoPlay: true,
   muted: true,
   loop: true,
-  src: '/assets/women2.mp4',
+  src: '/assets/women2.webm',
 };
 
 export default function Auth() {
@@ -174,9 +174,6 @@ export default function Auth() {
           <video {...videoOption}></video>
         </motion.div>
         <div className='bg-transparent fixed top-8 left-8 Bebas  text-7xl text-white z-10'>{'{ QUIZZER. }'}</div>
-        <div className='bg-zinc-800 bg-opacity-10 backdrop-blur-md w-screen fixed bottom-0 pl-8 pr-8 pb-4 pt-4 left-0 Poppins text-sm md:text-md lg:text-md text-white z-10'>
-          A selection of coding tests covering some of the most popular languages and frameworks
-        </div>
         <div className='bg-transparent gap-4 Bebas text-2xl text-white flex flex-col pl-8  lg:pl-52 items-center md:items-start lg:items-start justify-center fixed top-0 h-screen w-screen  z-10'>
           <div className='bg-opacity-20 lg:bg-opacity-100 md:bg-opacity-100 backdrop-blur-sm bg-[#49acaf] shadow-md rounded-md  w-[300px] flex flex-col items-center justify-start p-4'>
             <div className='self-start'>{option ? 'NEW Account' : 'Welcome Back'}</div>
@@ -247,6 +244,9 @@ export default function Auth() {
               </div>
             </div>
           </div>
+        </div>
+        <div className='bg-zinc-800 bg-opacity-10 backdrop-blur-md w-screen fixed bottom-0 pl-8 pr-8 pb-4 pt-4 left-0 Poppins text-sm md:text-md lg:text-md text-white z-10'>
+          A selection of coding tests covering some of the most popular languages and frameworks
         </div>
         <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}  action={action}>
           <Alert onClose={handleClose} severity='error' sx={{ width: '100%' }}>

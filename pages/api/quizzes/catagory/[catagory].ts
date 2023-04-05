@@ -9,10 +9,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     // await serverAuth(req);
+    const { catagory } = req.query;
+
+    if (typeof catagory !== "string") {
+      throw new Error("Invalid ID");
+    }
+    if (!catagory) {
+      throw new Error("Invalid ID");
+    }
 
     const quizzes = await prismadb.quiz.findMany({
       where: {
-        catagory: 'Framework',
+        catagory: catagory,
       },
       orderBy: [
         {
