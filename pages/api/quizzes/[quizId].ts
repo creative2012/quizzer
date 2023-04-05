@@ -2,13 +2,6 @@ import prismadb from "@/lib/prismadb";
 import { NextApiRequest, NextApiResponse } from "next";
 import shuffle from 'lodash/shuffle';
 // import serverAuth from "@/lib/serverAuth";
-interface Question {
-  question: string;
-  answers: string[];
-  correct: string;
-  id: string;
-  quizId: string;
-}
 
 export default async function handler(
   req: NextApiRequest,
