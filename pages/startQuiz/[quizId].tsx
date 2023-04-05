@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import React, { useState, useEffect, useCallback } from 'react';
 import Questions from '@/components/quiz/Questions';
 import { LinearProgress } from '@mui/material';
@@ -6,21 +6,16 @@ import Answers from '@/components/quiz/Answers';
 import { useRouter } from 'next/router';
 import useQuiz from '@/hooks/useQuiz';
 import { CircularProgress } from '@mui/material';
-import CountdownTimer from '@/components/quiz/CountDown';
-import { GiLaurelsTrophy } from 'react-icons/gi';
 import useCurrentUser from '@/hooks/useCurrentUser';
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import Alert from '@/components/Alert';
 import axios from 'axios';
+import ShowPoints from '@/components/quiz/ShowPoints';
+import Hello from '@/components/quiz/Hello';
+import QuizTitle from '@/components/quiz/QuizTitle';
 
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-  props,
-  ref,
-) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
 
 export default function Quiz() {
   type SavingCode = 'success' | 'info' | 'warning' | 'error' | undefined;
@@ -37,9 +32,9 @@ export default function Quiz() {
   const [isRunning, setIsRunning] = useState(false);
   const [answers, setAnswers] = useState<string[]>([]);
   const [gameOver, setGameOver] = useState(false);
-  const [isSaving, setisSaving] = useState<{ msg: string, code: SavingCode }>({
+  const [isSaving, setisSaving] = useState<{ msg: string; code: SavingCode }>({
     msg: '',
-    code:'info'
+    code: 'info',
   });
   const [points, setPoints] = useState(0);
   const [medal, setMedal] = useState('white');
@@ -59,19 +54,19 @@ export default function Quiz() {
   };
 
   const saveScore = useCallback(async () => {
-    setisSaving({msg:'Saving...',code:"info"});
+    setisSaving({ msg: 'Saving...', code: 'info' });
     setOpen(true);
     try {
       const response = await axios.post('/api/saveScore', {
         score: points,
       });
       setTimeout(() => {
-        setisSaving({msg:'Saved!.',code:"success"});
+        setisSaving({ msg: 'Saved!.', code: 'success' });
         setOpen(true);
       }, 1000);
     } catch (error) {
       setTimeout(() => {
-        setisSaving({msg:'could not connect to Database',code:"error"});
+        setisSaving({ msg: 'could not connect to Database', code: 'error' });
         setOpen(true);
       }, 1000);
       console.log(error);
@@ -145,7 +140,6 @@ export default function Quiz() {
       setTimeout(() => {
         saveScore();
       }, 4000);
-      
     }
   }, [answers, data?.question, gameOver, saveScore]);
 
@@ -190,61 +184,11 @@ export default function Quiz() {
         transition={{ duration: 0.7, ease: 'easeInOut' }}
         className='fixed grid grid-cols-1 grid-rows-8 text-zinc-800 bg-white w-[100vw] h-[100vh]'
       >
-        <div className='text-3xl flex flex-col items-center row-span-1 justify-center text-center z-10 bg-[#49acaf]'>
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{
-              opacity: 0,
-              y: -50,
-              transition: { delay: 0, duration: 0.2, ease: 'easeInOut' },
-            }}
-            transition={{
-              delay: 0.8,
-              duration: 0.2,
-              ease: 'easeInOut',
-              type: 'spring',
-              stiffness: 100,
-            }}
-            className='flex flex-col gap-4 text-white'
-          >
-            <span className='Pacifico text-7xl'>Hello </span>
-            <div className='flex flex-row items-center justify-center gap-4 font-semibold'>
-              <div>{user?.name}</div>
-            </div>
-          </motion.div>
-        </div>
-        {/* question Title */}
-
+        <Hello user={user} />
         <div className='relative bg-[#fdfdfd] min-h-[220px] text-[#455a64] row-span-2 flex flex-col gap-6 items-center justify-center text-center p-4 shadow-md z-10'>
-          {/* section title */}
-          <AnimatePresence mode='wait'>
-            <motion.div
-              key={data?.title}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{
-                opacity: 0,
-                y: -30,
-                transition: { delay: 0, duration: 0.2, ease: 'easeInOut' },
-              }}
-              transition={{
-                delay: delay.title,
-                duration: 0.5,
-                ease: 'easeInOut',
-                type: 'spring',
-                stiffness: 100,
-              }}
-              className='text flex flex-col gap-4 text-5xl font-semibold Bebas '
-            >
-              {data?.title}
-              {!start && <CountdownTimer initialTime={3} onComplete={startQuiz} />}
-            </motion.div>
-          </AnimatePresence>
-
-          {/* questions */}
-          {start && (
+          <QuizTitle data={data} start={start} delay={delay.title} startQuiz={startQuiz} />
             <Questions
+              start={start}
               keyValue={progress.question}
               delay={delay.question}
               question={data?.question[progress.question].question}
@@ -252,7 +196,6 @@ export default function Quiz() {
               msg={'Quiz over! Well done'}
               isSaving={isSaving.msg}
             />
-          )}
           <div className='absolute z-10 bottom-0 w-full'>
             <LinearProgress key='timeLeft' color='secondary' variant='determinate' value={timeLeft} />
           </div>
@@ -273,67 +216,15 @@ export default function Quiz() {
               />
             </>
           )}
-          {gameOver && (
-            <AnimatePresence mode='wait'>
-              <motion.div
-                key={data?.title}
-                initial={{ y: -30, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{
-                  opacity: 0,
-                  y: -30,
-                  transition: { delay: 0, duration: 0.2, ease: 'easeInOut' },
-                }}
-                transition={{
-                  delay: 2,
-                  duration: 0.5,
-                  ease: 'easeInOut',
-                  type: 'spring',
-                  stiffness: 100,
-                }}
-              >
-                <div key='1' className='flex flex-col gap-4'>
-                  <div key='2' className='text-center text-4xl Bebas'>
-                    You got
-                  </div>
-                  <div key='3' className='text-center'>
-                    {points} out of {data?.question.length - 1} questions correct
-                  </div>
-                  {medal !== 'white' && (
-                    <motion.div
-                      key='trophy'
-                      initial={{ y: 50, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      exit={{
-                        opacity: 0,
-                        y: 50,
-                        transition: { delay: 0, duration: 0.2, ease: 'easeInOut' },
-                      }}
-                      transition={{
-                        delay: 3,
-                        duration: 0.5,
-                        ease: 'easeInOut',
-                        type: 'spring',
-                        stiffness: 100,
-                      }}
-                      className='self-center'
-                    >
-                      <GiLaurelsTrophy key='trophy2' color={medal} size={50} />
-                    </motion.div>
-                  )}
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          )}
+          <ShowPoints data={data} points={points} medal={medal} isGameOver={gameOver} />
         </div>
-
         <div className='text-center relative bottom-4 self-center text-[#49acaf] h-[50px] Bebas text-6xl'>QUIZZER.</div>
       </motion.div>
-      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}  action={action}>
-          <Alert onClose={handleClose} severity={isSaving.code} sx={{ width: '100%' }}>
+      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose} action={action}>
+        <Alert onClose={handleClose} severity={isSaving.code} sx={{ width: '100%' }}>
           {isSaving.msg}
-          </Alert>
-        </Snackbar>
+        </Alert>
+      </Snackbar>
     </>
   );
 }

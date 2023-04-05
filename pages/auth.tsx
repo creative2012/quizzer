@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { OutlinedInputProps } from '@mui/material/OutlinedInput';
 import { CircularProgress, FormControl as Form } from '@mui/material';
-import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import Alert from '@/components/Alert';
 import { LoadingButton } from '@mui/lab';
 import { BiLogInCircle } from 'react-icons/bi';
 import axios from 'axios';
@@ -31,13 +31,6 @@ export async function getServerSideProps(context: NextPageContext) {
       props: {},
     };
   }
-
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-    props,
-    ref,
-  ) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-  });
 
 const TextFieldDL = styled((props: TextFieldProps) => (
   <TextField InputProps={{ disableUnderline: true } as Partial<OutlinedInputProps>} {...props} />
