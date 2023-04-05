@@ -1,5 +1,5 @@
-import useSWR from "swr";
-import fetcher from "@/lib/fetcher";
+import useSWR from 'swr';
+import fetcher from '@/lib/fetcher';
 
 const useQuizList = (url: string) => {
   const { data, error, isLoading } = useSWR(`api/quizzes/catagory/${url}`, fetcher, {

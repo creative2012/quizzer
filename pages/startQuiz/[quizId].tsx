@@ -17,6 +17,7 @@ export default function Quiz() {
   } = router;
   const { data, isLoading } = useQuiz(quizId as string);
   const { data: user } = useCurrentUser();
+
   const [start, setStart] = useState(false);
   const [timeLeft, setTimeLeft] = useState(100);
   const [isRunning, setIsRunning] = useState(false);
@@ -24,11 +25,11 @@ export default function Quiz() {
   const [gameOver, setGameOver] = useState(false);
   const [points, setPoints] = useState(0);
   const [medal, setMedal] = useState('white');
-  const [delay, setDelay] = useState({
+  const delay = {
     title: 1.5,
     question: 0.5,
     options: 1,
-  });
+  };
   const [progress, setProgress] = useState({
     tracker: 0,
     question: 0,
@@ -98,7 +99,7 @@ export default function Quiz() {
         setMedal('#C0C0C0');
       } else if (percentageCorrect == 0) {
         setMedal('white');
-      }else {
+      } else {
         setMedal('#CD7F32');
       }
 

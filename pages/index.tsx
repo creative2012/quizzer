@@ -33,7 +33,6 @@ export async function getServerSideProps(context: NextPageContext) {
     props: {},
   };
 }
-
 export default function Home() {
   const { data: languages, isLoading: isLang } = useQuizList('Language');
   const { data: frameworks, isLoading: isFrame } = useQuizList('Framework');
@@ -44,6 +43,7 @@ export default function Home() {
   const { data } = useCurrentUser();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
