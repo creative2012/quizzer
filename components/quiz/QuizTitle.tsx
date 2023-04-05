@@ -29,8 +29,8 @@ const QuizTitle: React.FC<QuizTitleProps> = ({ data, start, delay, startQuiz }) 
               }}
               className='text flex flex-col gap-4 text-5xl font-semibold Bebas '
             >
-              {data?.title}
-              {!start && <CountdownTimer initialTime={3} onComplete={startQuiz} />}
+             <h1> {data?.title} </h1>
+              {!start &&  <CountdownTimer initialTime={3} onComplete={startQuiz} />}
             </motion.div>
           </AnimatePresence>
 

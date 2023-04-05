@@ -1,20 +1,19 @@
-import { motion } from 'framer-motion';
 import React, { useState, useEffect, useCallback } from 'react';
-import Questions from '@/components/quiz/Questions';
-import { LinearProgress } from '@mui/material';
-import Answers from '@/components/quiz/Answers';
 import { useRouter } from 'next/router';
+import axios from 'axios';
 import useQuiz from '@/hooks/useQuiz';
-import { CircularProgress } from '@mui/material';
 import useCurrentUser from '@/hooks/useCurrentUser';
+import { motion } from 'framer-motion';
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import { LinearProgress, CircularProgress } from '@mui/material';
 import Alert from '@/components/Alert';
-import axios from 'axios';
 import ShowPoints from '@/components/quiz/ShowPoints';
 import Hello from '@/components/quiz/Hello';
 import QuizTitle from '@/components/quiz/QuizTitle';
+import Questions from '@/components/quiz/Questions';
+import Answers from '@/components/quiz/Answers';
 
 export default function Quiz() {
   type SavingCode = 'success' | 'info' | 'warning' | 'error' | undefined;
@@ -25,7 +24,7 @@ export default function Quiz() {
   } = router;
   const { data, isLoading } = useQuiz(quizId as string);
   const { data: user } = useCurrentUser();
-
+  const [open, setOpen] = useState(false);
   const [start, setStart] = useState(false);
   const [timeLeft, setTimeLeft] = useState(100);
   const [isRunning, setIsRunning] = useState(false);
@@ -142,8 +141,6 @@ export default function Quiz() {
     }
   }, [answers, data?.question, gameOver, saveScore]);
 
-  const [open, setOpen] = useState(false);
-
   useEffect(() => {
     if (timeLeft === 0) {
       setTimeLeft(timeLeft + 2);
@@ -193,7 +190,6 @@ export default function Quiz() {
             question={data?.question[progress.question].question}
             gameOver={gameOver}
             msg={'Quiz over! Well done'}
-            isSaving={isSaving.msg}
           />
           <div className='absolute z-10 bottom-0 w-full'>
             <LinearProgress key='timeLeft' color='secondary' variant='determinate' value={timeLeft} />
@@ -219,7 +215,7 @@ export default function Quiz() {
         </div>
         <div className='text-center relative bottom-4 self-center text-[#49acaf] h-[50px] Bebas text-6xl'>QUIZZER.</div>
       </motion.div>
-      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose} action={action}>
+      <Snackbar open={open} autoHideDuration={5000} onClose={handleClose} action={action}>
         <Alert onClose={handleClose} severity={isSaving.code} sx={{ width: '100%' }}>
           {isSaving.msg}
         </Alert>

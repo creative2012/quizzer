@@ -7,7 +7,6 @@ interface QuestionsProps {
   keyValue: number;
   gameOver: boolean;
   msg: string;
-  isSaving: string;
   start: boolean;
 }
 const Questions: React.FC<QuestionsProps> = ({ keyValue, delay, question, gameOver, msg, start }) => {
@@ -56,7 +55,7 @@ const Questions: React.FC<QuestionsProps> = ({ keyValue, delay, question, gameOv
               }}
               className='self-center text-2xl flex flex-col items-center justify-center gap-6'
             >
-              {msg}
+             <p>{msg}</p> 
             </motion.div>
           )}
         </motion.div>
