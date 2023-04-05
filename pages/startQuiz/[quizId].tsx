@@ -17,12 +17,24 @@ import Answers from '@/components/quiz/Answers';
 
 export default function Quiz() {
   type SavingCode = 'success' | 'info' | 'warning' | 'error' | undefined;
+  type QuestionType = {
+    question: string;
+    answers: string[];
+    correct: string;
+    id: string;
+    quizId: string;
+  };
+  
+  type QuizData = {
+    title: string;
+    question: QuestionType[];
+  } 
 
   const router = useRouter();
   const {
     query: { quizId },
   } = router;
-  const { data, isLoading } = useQuiz(quizId as string);
+
   const { data: user } = useCurrentUser();
   const [open, setOpen] = useState(false);
   const [start, setStart] = useState(false);
@@ -50,6 +62,39 @@ export default function Quiz() {
     setStart(true);
     setIsRunning(true);
   };
+    const [data, setData] = useState<QuizData>({
+      title: 'Default title',
+      question: [{
+        question: '',
+        answers: ['1'],
+        correct: '',
+        id: '',
+        quizId: '',
+      }]
+    });
+  
+    const { data: shuffleData, isLoading } = useQuiz(quizId as string);
+  
+    useEffect(() => {
+      if (shuffleData ) {
+        const { question, ...rest } = shuffleData;
+        const shuffledQuestions = [...question];
+        
+        shuffledQuestions.sort(() => Math.random() - 0.5);
+        shuffledQuestions.push({
+          question: '',
+          answers: [],
+          correct: '',
+          id: '',
+          quizId: '',
+        });
+  
+        setData({
+          ...rest,
+          question: shuffledQuestions,
+        });
+      }
+    }, [shuffleData]);
 
   const saveScore = useCallback(async () => {
     setisSaving({ msg: 'Saving...', code: 'info' });
