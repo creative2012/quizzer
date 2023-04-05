@@ -40,7 +40,7 @@ export default function Home() {
         transition={{ duration: 0.7, ease: 'easeInOut' }}
         className=' text-zinc-700 Main min-h-screen'
       >
-        <header className='whitespace-nowrap bg-zinc-800 text-white shadow-md bg-opacity-0 backdrop-blur-sm w-screen fixed top-0 left-0 pt-8 pl-4 pr-8 pb-8 lg:pr-12 lg:pl-8 md:pr-12 md:pl-8 ' >
+        <header className='whitespace-nowrap z-50 bg-zinc-800 text-white shadow-md bg-opacity-0 backdrop-blur-sm w-screen fixed top-0 left-0 pt-8 pl-4 pr-8 pb-8 lg:pr-12 lg:pl-8 md:pr-12 md:pl-8 ' >
           <nav className='flex flex-row justify-between items-center Bebas text-7xl z-10'>
             {'{ QUIZZER. }'}
             <NavButton data={data} />
