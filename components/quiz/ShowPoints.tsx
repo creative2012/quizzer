@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 interface CountdownTimerProps {
   data: Record<string, any>;
-  points: number;
+  points: number | undefined;
   medal: string;
   isGameOver: boolean;
 }

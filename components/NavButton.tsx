@@ -30,9 +30,9 @@ const NavButton = () => {
   return (
     <>
       <div className='text-2xl flex flex-row items-center gap-4 text-zinc-800'>
-        <Link href='/' className={`${(router.pathname === "/" || router.pathname === "/startQuiz/[quizId]") && "text-white"} hover:scale-110 transition transform cursor-pointer hidden md:block lg:block`}>Quizzes</Link>
-        <Link href='/awards' className={`${router.pathname === "/awards" && "text-white"} hover:scale-110 transition transform cursor-pointer hidden md:block lg:block`}>Awards</Link>
-        <Link href='/leaderboard' className={`${router.pathname === "/leaderboard" && "text-white"} hover:scale-110 transition transform cursor-pointer hidden md:block lg:block`}>LeaderBoard</Link>
+        <Link href='/' className={`${(router.pathname === "/" || router.pathname === "/startQuiz/[quizId]") && "text-white"} hover:scale-110 transition transform cursor-pointer hidden md:block lg:block focus:text-white `}>Quizzes</Link>
+        <Link href='/awards' className={`${router.pathname === "/awards" && "text-white"} hover:scale-110 transition transform cursor-pointer hidden md:block lg:block focus:text-white `}>Awards</Link>
+        <Link href='/leaderboard' className={`${router.pathname === "/leaderboard" && "text-white"} hover:scale-110 transition transform cursor-pointer hidden md:block lg:block focus:text-white `}>LeaderBoard</Link>
         <IconButton
           onClick={handleClick}
           size='small'
@@ -85,23 +85,23 @@ const NavButton = () => {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <div className='block md:hidden lg:hidden'>
-          <MenuItem onClick={handleClose}>
+          <MenuItem onClick={()=>{router.push('/')}}>
             <ListItemIcon>
               <QuizOutlinedIcon fontSize='small' />
             </ListItemIcon>
-            <Link href='/' className={`${router.pathname === "/" && "text-orange-500"}`}>Quizzes</Link>
+            <div className={`${router.pathname === "/" && "text-orange-500"}`}>Quizzes</div>
           </MenuItem>
-          <MenuItem onClick={handleClose}>
+          <MenuItem onClick={()=>{router.push('/awards')}}>
             <ListItemIcon>
               <EmojiEventsOutlinedIcon fontSize='small' />
             </ListItemIcon>
-            <Link href='/awards' className={`${router.pathname === "/awards" && "text-orange-500"}`}>Awards</Link>
+            <div className={`${router.pathname === "/awards" && "text-orange-500"}`}>Awards</div>
           </MenuItem>
-          <MenuItem onClick={handleClose}>
+          <MenuItem onClick={()=>{router.push('/leaderboard')}}>
             <ListItemIcon>
               <LeaderboardOutlinedIcon fontSize='small' />
             </ListItemIcon>
-            <Link href='/leaderboard' className={`${router.pathname === "/leaderboard" && "text-orange-500"}`}>Leaderboard</Link>
+            <div className={`${router.pathname === "/leaderboard" && "text-orange-500"}`}>Leaderboard</div>
           </MenuItem>
           <Divider />
         </div>

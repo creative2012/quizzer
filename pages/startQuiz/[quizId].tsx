@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import useQuiz from '@/hooks/useQuiz';
@@ -24,11 +24,11 @@ export default function Quiz() {
     id: string;
     quizId: string;
   };
-  
+
   type QuizData = {
     title: string;
     question: QuestionType[];
-  } 
+  };
 
   const router = useRouter();
   const {
@@ -42,12 +42,13 @@ export default function Quiz() {
   const [isRunning, setIsRunning] = useState(false);
   const [answers, setAnswers] = useState<string[]>([]);
   const [gameOver, setGameOver] = useState(false);
+  const [saved, SetSaved] = useState(false);
   const [isSaving, setisSaving] = useState<{ msg: string; code: SavingCode }>({
     msg: '',
     code: 'info',
   });
-  const [points, setPoints] = useState(0);
-  const [medal, setMedal] = useState('white');
+  const [points, setPoints] = useState<number>();
+  const [medal, setMedal] = useState<string>('white');
   const [delay, setDelay] = useState({
     title: 1.5,
     question: 0.5,
@@ -62,59 +63,72 @@ export default function Quiz() {
     setStart(true);
     setIsRunning(true);
   };
-    const [data, setData] = useState<QuizData>({
-      title: 'Default title',
-      question: [{
+  const [data, setData] = useState<QuizData>({
+    title: 'Default title',
+    question: [
+      {
         question: '',
         answers: ['1'],
         correct: '',
         id: '',
         quizId: '',
-      }]
-    });
-  
-    const { data: shuffleData, isLoading } = useQuiz(quizId as string);
-  
-    useEffect(() => {
-      if (shuffleData ) {
-        const { question, ...rest } = shuffleData;
-        const shuffledQuestions = [...question];
-        
-        shuffledQuestions.sort(() => Math.random() - 0.5).slice(0, 15);
-        shuffledQuestions.push({
-          question: '',
-          answers: [],
-          correct: '',
-          id: '',
-          quizId: '',
-        });
-  
-        setData({
-          ...rest,
-          question: shuffledQuestions,
-        });
-      }
-    }, [shuffleData]);
+      },
+    ],
+  });
+
+  const { data: shuffleData, isLoading } = useQuiz(quizId as string);
+
+  useEffect(() => {
+    if (shuffleData) {
+      const { question, ...rest } = shuffleData;
+      const shuffledQuestions = [...question];
+
+      shuffledQuestions.sort(() => Math.random() - 0.5).slice(0, 15);
+      shuffledQuestions.push({
+        question: '',
+        answers: [],
+        correct: '',
+        id: '',
+        quizId: '',
+      });
+
+      setData({
+        ...rest,
+        question: shuffledQuestions,
+      });
+    }
+  }, [shuffleData]);
 
   const saveScore = useCallback(async () => {
     setisSaving({ msg: 'Saving...', code: 'info' });
     setOpen(true);
     try {
       const response = await axios.post('/api/saveScore', {
+        userId: user.id,
+        quizId: quizId,
         score: points,
+        medal: medal,
       });
       setTimeout(() => {
-        setisSaving({ msg: 'Saved!.', code: 'success' });
+        setisSaving({ msg: response.data.message, code: 'success' });
         setOpen(true);
       }, 1000);
     } catch (error) {
       setTimeout(() => {
-        setisSaving({ msg: 'could not connect to Database', code: 'error' });
+        setisSaving({ msg: 'Error Saving Score', code: 'error' });
         setOpen(true);
       }, 1000);
-      console.log(error);
     }
-  }, [points]);
+    SetSaved(true);
+  }, [medal, points, quizId, user.id]);
+
+  useEffect(() => {
+    if (gameOver && !saved) {
+      saveScore();
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [points, saveScore]);
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
@@ -180,9 +194,6 @@ export default function Quiz() {
       }
 
       setPoints(correctAnswers);
-      setTimeout(() => {
-        saveScore();
-      }, 4000);
     }
   }, [answers, data?.question, gameOver, saveScore]);
 
@@ -218,17 +229,47 @@ export default function Quiz() {
 
   return (
     <>
-      <motion.div initial={{ opacity: 0}} animate={{ opacity: 1}} exit={{ opacity: 0}} transition={{ duration: 0.5, ease: 'easeInOut' }} className='z-50 fixed grid grid-cols-1 grid-rows-8 text-zinc-800 bg-white w-[100vw] h-[100vh]'>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.5, ease: 'easeInOut' }}
+        className='z-50 fixed grid grid-cols-1 grid-rows-8 text-zinc-800 bg-white w-[100vw] h-[100vh]'
+      >
         <Hello user={user} />
         <div className='relative bg-[#fdfdfd] min-h-[220px] text-[#455a64] row-span-2 flex flex-col gap-6 items-center justify-center text-center p-4 shadow-md z-10'>
           <QuizTitle data={data} start={start} delay={delay.title} startQuiz={startQuiz} />
-          <Questions start={start} keyValue={progress.question} delay={delay.question} question={data?.question[progress.question].question} gameOver={gameOver} msg={'Quiz over! Well done'}/>
-          <LinearProgress className='absolute z-10 bottom-0 w-full' key='timeLeft' color='secondary' variant='determinate' value={timeLeft} />
-          <LinearProgress className='absolute z-10 top-0 w-full' key='progress' color='primary' variant='determinate' value={progress.tracker} />
+          <Questions
+            start={start}
+            keyValue={progress.question}
+            delay={delay.question}
+            question={data?.question[progress.question].question}
+            gameOver={gameOver}
+            msg={'Quiz over! Well done'}
+          />
+          <LinearProgress
+            className='absolute z-10 bottom-0 w-full'
+            key='timeLeft'
+            color='secondary'
+            variant='determinate'
+            value={timeLeft}
+          />
+          <LinearProgress
+            className='absolute z-10 top-0 w-full'
+            key='progress'
+            color='primary'
+            variant='determinate'
+            value={progress.tracker}
+          />
         </div>
         <div className='flex min-h-[300px] justify-center items-center row-span-2  z-10 '>
           {start && !gameOver && (
-            <Answers delay={delay.options} keyValue={progress.question} answers={data?.question[progress.question]?.answers} onClick={handleOption} />
+            <Answers
+              delay={delay.options}
+              keyValue={progress.question}
+              answers={data?.question[progress.question]?.answers}
+              onClick={handleOption}
+            />
           )}
           <ShowPoints data={data} points={points} medal={medal} isGameOver={gameOver} />
         </div>
