@@ -1,8 +1,8 @@
 import useSWR from 'swr';
 import fetcher from '@/lib/fetcher';
 
-const useHighscores = (title: string) => {
-  const { data, error, isLoading } = useSWR(`api/highscores/${title}`, fetcher, {
+const useHighscores = () => {
+  const { data, error, isLoading } = useSWR(`api/highscores`, fetcher, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false,

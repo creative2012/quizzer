@@ -66,8 +66,8 @@ model Questions {
 
 model Scores {
     id        String   @id @default(auto()) @map("_id") @db.ObjectId
-    quizId    String   @unique @db.ObjectId
-    userId    String   @unique @db.ObjectId
+    quizId    String    @db.ObjectId
+    userId    String   @db.ObjectId
     highScore Int
     medal     String
     createdAt DateTime @default(now())

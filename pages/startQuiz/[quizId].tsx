@@ -105,6 +105,7 @@ export default function Quiz() {
     } catch (error) {
       setisSaving({ msg: 'Error Saving Score', code: 'error' });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [points, medal, quizId, user?.id]);
 
   useEffect(() => {
