@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback} from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import useQuiz from '@/hooks/useQuiz';
@@ -29,41 +29,7 @@ export default function Quiz() {
     title: string;
     question: QuestionType[];
   };
-
-  const router = useRouter();
-  const {
-    query: { quizId },
-  } = router;
-
-  const { data: user } = useCurrentUser();
-  const [open, setOpen] = useState(false);
-  const [start, setStart] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(100);
-  const [isRunning, setIsRunning] = useState(false);
-  const [answers, setAnswers] = useState<string[]>([]);
-  const [gameOver, setGameOver] = useState(false);
-  const [saved, SetSaved] = useState(false);
-  const [isSaving, setisSaving] = useState<{ msg: string; code: SavingCode }>({
-    msg: '',
-    code: 'info',
-  });
-  const [points, setPoints] = useState<number>();
-  const [medal, setMedal] = useState<string>('white');
-  const [delay, setDelay] = useState({
-    title: 1.5,
-    question: 0.5,
-    options: 1,
-  });
-  const [progress, setProgress] = useState({
-    tracker: 0,
-    question: 0,
-  });
-
-  const startQuiz = () => {
-    setStart(true);
-    setIsRunning(true);
-  };
-  const [data, setData] = useState<QuizData>({
+  const defaultQuizData = {
     title: 'Default title',
     question: [
       {
@@ -74,9 +40,31 @@ export default function Quiz() {
         quizId: '',
       },
     ],
+  };
+  const { query: { quizId } } = useRouter();
+  const { data: user } = useCurrentUser();
+  const { data: shuffleData, isLoading } = useQuiz(quizId as string);
+  const [isRunning, setIsRunning] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [points, setPoints] = useState<number>();
+  const [medal, setMedal] = useState<string>('white');
+  const [delay, setDelay] = useState({ title: 1.5, question: 0.5, options: 1 });
+  const [progress, setProgress] = useState({ tracker: 0, question: 0 });
+  const [data, setData] = useState<QuizData>(defaultQuizData);
+  const [open, setOpen] = useState(false);
+  const [start, setStart] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(100);
+  const [answers, setAnswers] = useState<string[]>([]);
+  const [gameOver, setGameOver] = useState(false);
+  const [isSaving, setisSaving] = useState<{ msg: string; code: SavingCode }>({
+    msg: '',
+    code: 'info',
   });
 
-  const { data: shuffleData, isLoading } = useQuiz(quizId as string);
+  const startQuiz = () => {
+    setStart(true);
+    setIsRunning(true);
+  };
 
   useEffect(() => {
     if (shuffleData) {
@@ -100,27 +88,21 @@ export default function Quiz() {
   }, [shuffleData]);
 
   const saveScore = useCallback(async () => {
-    setisSaving({ msg: 'Saving...', code: 'info' });
+    setSaved(true);
     setOpen(true);
+    setisSaving({ msg: 'Saving...', code: 'info' });
     try {
       const response = await axios.post('/api/saveScore', {
-        userId: user.id,
-        quizId: quizId,
+        userId: user?.id,
+        quizId,
         score: points,
-        medal: medal,
+        medal,
       });
-      setTimeout(() => {
-        setisSaving({ msg: response.data.message, code: 'success' });
-        setOpen(true);
-      }, 1000);
+      setisSaving({ msg: response.data.message, code: 'success' });
     } catch (error) {
-      setTimeout(() => {
-        setisSaving({ msg: 'Error Saving Score', code: 'error' });
-        setOpen(true);
-      }, 1000);
+      setisSaving({ msg: 'Error Saving Score', code: 'error' });
     }
-    SetSaved(true);
-  }, [medal, points, quizId, user.id]);
+  }, [points, medal, quizId, user?.id]);
 
   useEffect(() => {
     if (gameOver && !saved) {
@@ -147,27 +129,20 @@ export default function Quiz() {
   const handleOption = useCallback(
     (e: string) => {
       setIsRunning(false);
-
-      let nextQuestion = progress.question;
-      let tracker = progress.tracker;
-
-      const newItem = e;
-      setAnswers((prevItems) => [...prevItems, newItem]);
-
-      delay.question === 0.5 && setDelay({ title: 0, question: 0, options: 1 });
-
+      const nextQuestion = progress.question + 1;
+      const tracker = progress.tracker + 100 / (data?.question.length - 1);
+      setAnswers((prevItems) => [...prevItems, e]);
+      setProgress({ tracker, question: nextQuestion });
       if (progress.question < data?.question.length - 2) {
         setTimeLeft(105);
         setIsRunning(true);
+        setDelay({ title: 0, question: 0, options: 1 });
       } else {
         setIsRunning(false);
         setGameOver(true);
       }
-      nextQuestion += 1;
-      tracker += 100 / (data?.question.length - 1);
-      setProgress({ tracker: tracker, question: nextQuestion });
     },
-    [data?.question, delay.question, progress.question, progress.tracker]
+    [data?.question, progress.question, progress.tracker]
   );
 
   useEffect(() => {

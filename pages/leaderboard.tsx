@@ -6,6 +6,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import useHighscores from '@/hooks/useHighscores';
 
 export async function getServerSideProps(context: NextPageContext) {
   const session = await getSession(context);
@@ -23,8 +24,9 @@ export async function getServerSideProps(context: NextPageContext) {
   };
 }
 export default function Leaderboard() {
-  const [quiz, setQuiz] = React.useState('1');
-
+  const [quiz, setQuiz] = React.useState('2');
+  const { data } = useHighscores(quiz);
+  console.log(data);
   const handleChange = (event: SelectChangeEvent) => {
     setQuiz(event.target.value as string);
   };
@@ -45,7 +47,7 @@ export default function Leaderboard() {
                 onChange={handleChange}
               >
                 <MenuItem value={1}>Javascript</MenuItem>
-                <MenuItem value={2}>Twenty</MenuItem>
+                <MenuItem value={2}>all</MenuItem>
                 <MenuItem value={3}>Thirty</MenuItem>
               </Select>
             </FormControl>
