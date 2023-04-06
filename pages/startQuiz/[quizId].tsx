@@ -56,6 +56,7 @@ export default function Quiz() {
   const [timeLeft, setTimeLeft] = useState(100);
   const [answers, setAnswers] = useState<string[]>([]);
   const [gameOver, setGameOver] = useState(false);
+  const [timeScore, setTimeScore] = useState(0)
   const [isSaving, setisSaving] = useState<{ msg: string; code: SavingCode }>({
     msg: '',
     code: 'info',
@@ -91,11 +92,13 @@ export default function Quiz() {
     setSaved(true);
     setOpen(true);
     setisSaving({ msg: 'Saving...', code: 'info' });
+    let score = 0;
+    points != undefined ? score = points * timeScore : score = 0 * timeScore
     try {
       const response = await axios.post('/api/saveScore', {
         userId: user?.id,
         quizId,
-        score: points,
+        score: score,
         medal,
       });
       setisSaving({ msg: response.data.message, code: 'success' });
@@ -133,6 +136,7 @@ export default function Quiz() {
       const tracker = progress.tracker + 100 / (data?.question.length - 1);
       setAnswers((prevItems) => [...prevItems, e]);
       setProgress({ tracker, question: nextQuestion });
+      setTimeScore(timeLeft + timeScore);
       if (progress.question < data?.question.length - 2) {
         setTimeLeft(105);
         setIsRunning(true);
@@ -142,7 +146,7 @@ export default function Quiz() {
         setGameOver(true);
       }
     },
-    [data?.question, progress.question, progress.tracker]
+    [data?.question.length, progress.question, progress.tracker, timeLeft, timeScore]
   );
 
   useEffect(() => {
