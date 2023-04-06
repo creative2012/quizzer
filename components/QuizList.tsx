@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { isEmpty } from 'lodash';
 import QuizCard from './QuizCard';
 import { motion } from 'framer-motion';
 import { CircularProgress } from '@mui/material';
+import ScrollContainer from 'react-indiana-drag-scroll'
 
 interface QuizListProps {
   data: Record<string, any>[];
@@ -18,6 +19,8 @@ const boxVariants = {
 };
 
 const QuizList: React.FC<QuizListProps> = ({ data, title, loading }) => {
+  // We will use React useRef hook to reference the wrapping div:
+
   if (isEmpty(data)) {
     return null;
   }
@@ -39,7 +42,7 @@ const QuizList: React.FC<QuizListProps> = ({ data, title, loading }) => {
         damping: 20,
       }}
     >
-      <div className='relative custScroll-x px-4 text-white space-y-8 flex flex-row  justify-normal w-screen  pb-8 overflow-x-scroll'>
+      <ScrollContainer hideScrollbars={false} vertical={false} className='relative custScroll-x px-4 text-white space-y-8 flex flex-row  justify-normal w-screen  pb-8 overflow-x-scroll' >
         {loading && (
           <div className='absolute w-full h-full  text-black flex flex-col items-center justify-center z-50 gap-4 top-0 left-0'>
             <CircularProgress color='warning' size={34} />
@@ -63,7 +66,7 @@ const QuizList: React.FC<QuizListProps> = ({ data, title, loading }) => {
             <div className='w-[150px]'></div>
           </motion.div>
         </div>
-      </div>
+      </ScrollContainer>
     </motion.div>
   );
 };

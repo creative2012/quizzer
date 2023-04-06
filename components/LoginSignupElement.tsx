@@ -46,7 +46,7 @@ const LoginSignupElement = () => {
   const [password, setPassword] = useState('');
 
   const toggleVariant = useCallback(() => {
-    setOption((currentVariant) => (currentVariant === true ? false : true));
+    setOption((currentVariant) => (!currentVariant));
   }, []);
 
   const login = useCallback(async () => {

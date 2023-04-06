@@ -35,7 +35,9 @@ body {
   background-size: 20px 20px;
   background-image:  repeating-linear-gradient(to right, #5bb4b7, #5bb4b7 1px, #49acaf 1px, #49acaf);
 }
-
+.custScroll-x{
+  overflow-x: scroll !important;
+}
 .custScroll-x::-webkit-scrollbar-track {
   border-radius: 10px;
   background-color: transparent;  

@@ -38,7 +38,7 @@ export default function Auth() {
         </motion.div>
         <header className='bg-transparent fixed top-8 left-8 Bebas  text-7xl text-white z-10'><h1>{'{ QUIZZER. }'}</h1></header>
         <section>
-         <LoginSignupElement />
+          <LoginSignupElement />
         </section>
         <footer className='bg-zinc-800 bg-opacity-10 backdrop-blur-md w-screen fixed bottom-0 pl-8 pr-8 pb-4 pt-4 left-0 Poppins text-sm md:text-md lg:text-md text-white z-10'>
           <p>A selection of coding tests covering some of the most popular languages and frameworks</p>
