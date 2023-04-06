@@ -33,7 +33,9 @@ const NavButton: React.FC<NavButtonProps> = ({ data }) => {
     <div className='hover:scale-110 transition transform cursor-pointer text-white hidden md:block lg:block'>
       Quizzes
     </div>
-    <div className='hover:scale-110 transition transform cursor-pointer hidden md:block lg:block'>Awards</div>
+    <div className='hover:scale-110 transition transform cursor-pointer hidden md:block lg:block'>
+      Awards
+    </div>
     <div className='hover:scale-110 transition transform cursor-pointer hidden md:block lg:block'>
       LeaderBoard
     </div>

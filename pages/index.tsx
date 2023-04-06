@@ -29,8 +29,8 @@ export default function Home() {
 
   return (
     <Layout>
-      <div className='h-[150px]'></div>
       <section>
+        <div className='h-[150px]'></div>
         <QuizList title={'Languages'} data={languages} loading={isLang} />
         <QuizList title={'Librarys'} data={librarys} loading={isFrame} />
         <QuizList title={'Frameworks'} data={frameworks} loading={isLib} />

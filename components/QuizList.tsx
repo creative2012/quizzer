@@ -29,13 +29,6 @@ const QuizList: React.FC<QuizListProps> = ({ data, title, loading }) => {
       animate={{ opacity: 1 }}
       exit={{
         opacity: 0,
-        transition: {
-          duration: 0.5,
-          ease: 'easeInOut',
-          type: 'spring',
-          stiffness: 260,
-          damping: 20,
-        },
       }}
       transition={{
         delay: 0.5,

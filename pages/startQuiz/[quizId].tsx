@@ -218,43 +218,17 @@ export default function Quiz() {
 
   return (
     <>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.7, ease: 'easeInOut' }}
-        className='fixed grid grid-cols-1 grid-rows-8 text-zinc-800 bg-white w-[100vw] h-[100vh]'
-      >
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.7, ease: 'easeInOut' }} className='fixed grid grid-cols-1 grid-rows-8 text-zinc-800 bg-white w-[100vw] h-[100vh]'>
         <Hello user={user} />
         <div className='relative bg-[#fdfdfd] min-h-[220px] text-[#455a64] row-span-2 flex flex-col gap-6 items-center justify-center text-center p-4 shadow-md z-10'>
           <QuizTitle data={data} start={start} delay={delay.title} startQuiz={startQuiz} />
-          <Questions
-            start={start}
-            keyValue={progress.question}
-            delay={delay.question}
-            question={data?.question[progress.question].question}
-            gameOver={gameOver}
-            msg={'Quiz over! Well done'}
-          />
-          <div className='absolute z-10 bottom-0 w-full'>
-            <LinearProgress key='timeLeft' color='secondary' variant='determinate' value={timeLeft} />
-          </div>
-          <div className='absolute z-10 top-0 w-full'>
-            <LinearProgress key='progress' color='primary' variant='determinate' value={progress.tracker} />
-          </div>
+          <Questions start={start} keyValue={progress.question} delay={delay.question} question={data?.question[progress.question].question} gameOver={gameOver} msg={'Quiz over! Well done'}/>
+          <LinearProgress className='absolute z-10 bottom-0 w-full' key='timeLeft' color='secondary' variant='determinate' value={timeLeft} />
+          <LinearProgress className='absolute z-10 top-0 w-full' key='progress' color='primary' variant='determinate' value={progress.tracker} />
         </div>
-
-        {/* answers */}
         <div className='flex min-h-[300px] justify-center items-center row-span-2  z-10 '>
           {start && !gameOver && (
-            <>
-              <Answers
-                delay={delay.options}
-                keyValue={progress.question}
-                answers={data?.question[progress.question]?.answers}
-                onClick={handleOption}
-              />
-            </>
+            <Answers delay={delay.options} keyValue={progress.question} answers={data?.question[progress.question]?.answers} onClick={handleOption} />
           )}
           <ShowPoints data={data} points={points} medal={medal} isGameOver={gameOver} />
         </div>
