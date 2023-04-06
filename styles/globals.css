@@ -11,6 +11,9 @@ body {
   font-family: 'Poppins', sans-serif;
   overflow-x: hidden;
   overflow-y: auto;
+  background-color: #49acaf;
+  background-size: 20px 20px;
+  background-image:  repeating-linear-gradient(to right, #5bb4b7, #5bb4b7 1px, #49acaf 1px, #49acaf);
 }
 .Pacifico{
   font-family: 'Pacifico', cursive;
@@ -31,7 +34,6 @@ body {
 }
 .Main{
   background-color: #49acaf;
-  opacity: 0.8;
   background-size: 20px 20px;
   background-image:  repeating-linear-gradient(to right, #5bb4b7, #5bb4b7 1px, #49acaf 1px, #49acaf);
 }

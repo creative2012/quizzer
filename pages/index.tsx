@@ -28,16 +28,13 @@ export default function Home() {
   const { data: runtime, isLoading: isRun } = useQuizList('Runtime Environment');
 
   return (
-    <Layout>
       <section>
-        <div className='h-[150px]'></div>
+        <div className={`h-[150px]`}></div>
         <QuizList title={'Languages'} data={languages} loading={isLang} />
         <QuizList title={'Librarys'} data={librarys} loading={isFrame} />
         <QuizList title={'Frameworks'} data={frameworks} loading={isLib} />
         <QuizList title={'Databases'} data={databases} loading={isDB} />
         <QuizList title={'Runtime Environments'} data={runtime} loading={isRun} />
-        <div className='h-[60px]'></div>
       </section>
-    </Layout>
   );
 }
