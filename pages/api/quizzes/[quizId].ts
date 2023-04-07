@@ -17,30 +17,33 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       throw new Error('Invalid ID');
     }
 
-    const questions = await prismadb.questions.findMany({
-      where: {
-        quizId: quizId,
-      },
-    });
+    // const questions = await prismadb.questions.findMany({
+    //   where: {
+    //     quizId: quizId,
+    //   },
+    // });
 
-    if (!questions) {
-      throw new Error('No Questions Found');
-    }
+    // if (!questions) {
+    //   throw new Error('No Questions Found');
+    // }
 
     const quiz = await prismadb.quiz.findUnique({
       where: {
         id: quizId,
       },
+      include: {
+        questions: true,
+      },
     });
     if (!quiz) {
       throw new Error('No Quiz Found');
     }
-    const result = {
-      title: quiz.title,
-      question: questions,
-    };
+    // const result = {
+    //   title: quiz.title,
+    //   question: questions,
+    // };
 
-    return res.status(200).json(result);
+    return res.status(200).json(quiz);
   } catch (error) {
     console.log(error);
     return res.status(400).end();

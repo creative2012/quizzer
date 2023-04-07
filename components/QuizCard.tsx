@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { SiJavascript, SiMongodb, SiReact, SiVuedotjs, SiPrisma, SiLaravel, SiJquery } from 'react-icons/si';
+import { SiJavascript, SiMongodb, SiReact, SiVuedotjs, SiPrisma, SiLaravel, SiJquery, SiHtml5, SiCss3 } from 'react-icons/si';
 import { TbBrandNextjs, TbBrandPython, TbBrandMysql } from 'react-icons/tb';
 import { FaPhp, FaNodeJs } from 'react-icons/fa';
 import Rating from '@mui/material/Rating';
@@ -95,7 +95,14 @@ const QuizCard: React.FC<QuizCardProps> = ({ data }) => {
       Img = FaNodeJs;
       col = 'black';
       break;
-
+    case 'html':
+      Img = SiHtml5;
+      col = 'black';
+      break;
+      case 'css':
+      Img = SiCss3;
+      col = 'black';
+      break;
     default:
       break;
   }

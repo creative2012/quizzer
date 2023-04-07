@@ -55,7 +55,7 @@ const Questions: React.FC<QuestionsProps> = ({ keyValue, delay, question, gameOv
               }}
               className='self-center text-2xl flex flex-col items-center justify-center gap-6'
             >
-             <p>{msg}</p> 
+             {msg}
             </motion.div>
           )}
         </motion.div>

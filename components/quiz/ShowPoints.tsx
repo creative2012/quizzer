@@ -55,7 +55,7 @@ const ShowPoints: React.FC<CountdownTimerProps> = ({ data, points, medal, isGame
                 }}
                 className='self-center'
               >
-                <GiLaurelsTrophy key='trophy2' color={medal} size={50} />
+                <GiLaurelsTrophy key='trophy2' color={medal} size={70} />
               </motion.div>
             )}
           </div>

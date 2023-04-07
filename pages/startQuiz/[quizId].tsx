@@ -44,6 +44,7 @@ export default function Quiz() {
   const { query: { quizId } } = useRouter();
   const { data: user } = useCurrentUser();
   const { data: shuffleData, isLoading } = useQuiz(quizId as string);
+  console.log(shuffleData)
   const [isRunning, setIsRunning] = useState(false);
   const [saved, setSaved] = useState(false);
   const [points, setPoints] = useState<number>();
@@ -69,10 +70,10 @@ export default function Quiz() {
 
   useEffect(() => {
     if (shuffleData) {
-      const { question, ...rest } = shuffleData;
-      const shuffledQuestions = [...question];
+      const { questions, ...rest } = shuffleData;
+      const shuffledQuestions = [...questions];
 
-      shuffledQuestions.sort(() => Math.random() - 0.5).slice(0, 15);
+      shuffledQuestions.sort(() => Math.random() - 0.5).slice(0, 10);
       shuffledQuestions.push({
         question: '',
         answers: [],

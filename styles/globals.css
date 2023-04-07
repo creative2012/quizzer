@@ -68,3 +68,17 @@ body::-webkit-scrollbar-thumb {
   border-radius: 10px;
   background-color: #ff5722;
 }
+.custScroll-y::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: transparent;  
+}
+.custScroll-y::-webkit-scrollbar {
+  width: 5px;
+  padding-right: 5px;
+  background-color: rgba(255, 255, 255, 0.342);
+}
+
+.custScroll-y::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #ff8965;
+}

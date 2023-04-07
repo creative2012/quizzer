@@ -37,9 +37,9 @@ const Answers: React.FC<AnswerProps> = ({ onClick, delay, answers, keyValue }) =
           <div
             key={alphabet[index] + keyValue}
             onClick={() => onClick(answer)}
-            className='group hover:bg-[#ff5722] cursor-pointer noTrans text-xl relative flex flex-row gap-2 items-center justify-center shadow-md p-4 rounded-md bg-[#455a64]  text-white hover:shadow-lg transition transform hover:scale-110'
+            className='group hover:bg-[#ff5722] cursor-pointer noTrans text-xl relative grid grid-cols-6 gap-2 items-center justify-center shadow-md p-4 rounded-md bg-[#455a64]  text-white hover:shadow-lg transition transform hover:scale-110'
           >
-            <div className='absolute left-4 font-bold'>{alphabet[index]}</div> {answer}
+            <div className='font-bold'>{alphabet[index]}</div><div className="col-span-5"> {answer}</div>
           </div>
         ))}
       </motion.div>
