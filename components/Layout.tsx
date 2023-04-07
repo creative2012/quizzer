@@ -68,14 +68,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </nav>
         </header>
       </motion.div>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.7, ease: 'easeInOut' }}
-      >
+
         {children}
-      </motion.div>
+     
       <div className='h-[60px]'></div>
       <motion.div
         initial={{ x:0, opacity: 0 }}

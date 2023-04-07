@@ -9,6 +9,7 @@ interface QuizListProps {
   data: Record<string, any>[];
   title: string;
   loading: boolean;
+  msg?: string
 }
 const boxVariants = {
   initial: { opacity: 0 },
@@ -18,7 +19,7 @@ const boxVariants = {
   },
 };
 
-const QuizList: React.FC<QuizListProps> = ({ data, title, loading }) => {
+const QuizList: React.FC<QuizListProps> = ({ data, title, loading, msg }) => {
   // We will use React useRef hook to reference the wrapping div:
 
   if (isEmpty(data)) {
@@ -42,6 +43,8 @@ const QuizList: React.FC<QuizListProps> = ({ data, title, loading }) => {
         damping: 20,
       }}
     >
+      {msg && (        <p key="quizmsg" className="px-10 text-white">{msg}</p>
+)}
       <ScrollContainer hideScrollbars={false} vertical={false} className='relative custScroll-x px-4 text-white space-y-8 flex flex-row  justify-normal w-screen  pb-8 overflow-x-scroll' >
         {loading && (
           <div className='absolute w-full h-full  text-black flex flex-col items-center justify-center z-50 gap-4 top-0 left-0'>
