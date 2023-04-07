@@ -29,6 +29,7 @@ export default function Home() {
   return (
       <section>
         <div className={`h-[150px]`}></div>
+        <p key="quizmsg" className="px-10 text-white">Each Quiz gives you 10 questions to answer within a time limit from a large pool of questions on each topic.</p>
         <QuizList title={'Languages'} data={languages} loading={isLang} />
         <QuizList title={'Librarys'} data={librarys} loading={isFrame} />
         <QuizList title={'Frameworks'} data={frameworks} loading={isLib} />

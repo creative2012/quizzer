@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback} from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import useQuiz from '@/hooks/useQuiz';
@@ -41,10 +41,12 @@ export default function Quiz() {
       },
     ],
   };
-  const { query: { quizId } } = useRouter();
+  const {
+    query: { quizId },
+  } = useRouter();
   const { data: user } = useCurrentUser();
   const { data: shuffleData, isLoading } = useQuiz(quizId as string);
-  console.log(shuffleData)
+  console.log(shuffleData);
   const [isRunning, setIsRunning] = useState(false);
   const [saved, setSaved] = useState(false);
   const [points, setPoints] = useState<number>();
@@ -57,7 +59,7 @@ export default function Quiz() {
   const [timeLeft, setTimeLeft] = useState(100);
   const [answers, setAnswers] = useState<string[]>([]);
   const [gameOver, setGameOver] = useState(false);
-  const [timeScore, setTimeScore] = useState(0)
+  const [timeScore, setTimeScore] = useState(0);
   const [isSaving, setisSaving] = useState<{ msg: string; code: SavingCode }>({
     msg: '',
     code: 'info',
@@ -92,9 +94,8 @@ export default function Quiz() {
   const saveScore = useCallback(async () => {
     setSaved(true);
     setOpen(true);
-    setisSaving({ msg: 'Saving...', code: 'info' });
     let score = 0;
-    points != undefined ? score = points * timeScore : score = 0 * timeScore
+    points != undefined ? (score = Math.floor(points * (timeScore / 5))) : (score = 0 * timeScore);
     try {
       const response = await axios.post('/api/saveScore', {
         userId: user?.id,
@@ -102,11 +103,11 @@ export default function Quiz() {
         score: score,
         medal,
       });
-      setisSaving({ msg: response.data.message, code: 'success' });
+      setisSaving({ msg: response.data.message, code: response.data.message === "You didnt beat your highscore this time" ? 'info' : 'success' });
     } catch (error) {
       setisSaving({ msg: 'Error Saving Score', code: 'error' });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [points, medal, quizId, user?.id]);
 
   useEffect(() => {
@@ -184,6 +185,7 @@ export default function Quiz() {
       handleOption('timeOut');
     }
   }, [timeLeft, handleOption]);
+  
   const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
       return;
@@ -244,14 +246,14 @@ export default function Quiz() {
           />
         </div>
         <div className='flex min-h-[300px] justify-center items-center row-span-2  z-10 '>
-          {start && !gameOver && (
-            <Answers
-              delay={delay.options}
-              keyValue={progress.question}
-              answers={data?.question[progress.question]?.answers}
-              onClick={handleOption}
-            />
-          )}
+          <Answers
+            start={start}
+            gameOver={gameOver}
+            delay={delay.options}
+            keyValue={progress.question}
+            answers={data?.question[progress.question]?.answers}
+            onClick={handleOption}
+          />
           <ShowPoints data={data} points={points} medal={medal} isGameOver={gameOver} />
         </div>
         <div className='text-center relative bottom-4 self-center text-[#49acaf] h-[50px] Bebas text-6xl'>QUIZZER.</div>

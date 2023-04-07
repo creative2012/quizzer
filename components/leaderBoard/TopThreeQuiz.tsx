@@ -10,7 +10,7 @@ const TopThreeQuiz: React.FC<CountdownTimerProps> = ({ data }) => {
  
     return (
       <AnimatePresence mode='wait'>
-        <div className='h-[200px] gap-4 flex justify-center bg-zinc-100 rounded-xl'>
+        <div className='h-[200px] gap-4 flex justify-center bg-zinc-100 rounded-xl shadow-md'>
               <div className='h-[200px] text-zinc-800 w-[300px] grid grid-cols-3  items-end gap-4 bg-zinc-100 rounded-xl'>
               <div className='bg-[#ff8a65] text-white  font-semibold flex flex-col items-center h-[30%]'>
                   <div className='flex flex-col justify-center items-center gap-2 relative -top-20'>

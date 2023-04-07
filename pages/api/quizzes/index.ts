@@ -20,9 +20,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           level: 'desc',
         },
       ],
+      include: {
+        questions: true,
+      },
     });
 
-    return res.status(200).json(quizzes);
+    const quizsWithQuestionCount = quizzes.map((quiz) => ({
+      ...quiz,
+      questionCount: quiz.questions.length,
+    }));
+
+    return res.status(200).json(quizsWithQuestionCount);
   } catch (error) {
     console.log(error);
     return res.status(400).end();

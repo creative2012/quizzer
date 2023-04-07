@@ -135,7 +135,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ data }) => {
             <Rating name='read-only' size='small' value={level} readOnly />
             <div className='text-xs font-normal'>{data?.level}</div>
           </div>
-          <div className='absolute right-4 bottom-4 text-xs text-right w-full'>25 questions</div>
+          <div className='absolute right-4 bottom-4 text-xs text-right w-full'>{data?.questionCount} questions</div>
           {isLoading && (
             <div className='absolute left-[45%] top-[35%] text-[#ff5722]'>
               <CircularProgress thickness={7} color='inherit' size={34} />
