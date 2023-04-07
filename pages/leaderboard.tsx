@@ -10,9 +10,10 @@ import useLeaderboard from '@/hooks/useLeaderboard';
 import { CircularProgress } from '@mui/material';
 import useHighscores from '@/hooks/useHighscores';
 import { motion } from 'framer-motion';
-import { useRouter } from 'next/router';
 import Avatar from '@mui/material/Avatar';
 import { deepOrange } from '@mui/material/colors';
+import TopThreeQuiz from '@/components/leaderBoard/TopThreeQuiz';
+import TopThree from '@/components/leaderBoard/TopThree';
 
 export async function getServerSideProps(context: NextPageContext) {
   const session = await getSession(context);
@@ -32,21 +33,27 @@ export async function getServerSideProps(context: NextPageContext) {
 export default function Leaderboard() {
   const [quiz, setQuiz] = useState('Javascript');
   const { data: leaderboard, mutate: mutateLb } = useLeaderboard();
+  const [leaders, setLeaders] = useState([{ name: '' }, { name: '' }, { name: '' }]);
   const { data: quizHighScores, isLoading, mutate } = useHighscores(quiz);
-  const router = useRouter();
+  const [quizLeaders, setQuizLeaders] = useState([{ name: '' }, { name: '' }, { name: '' }]);
   // Call this function whenever you want to
   // refresh props!
-
+  useEffect(() => {
+    setQuizLeaders(quizHighScores?.scores?.slice(0, 3));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quizHighScores]);
   const handleChange = (event: SelectChangeEvent) => {
     setQuiz(event.target.value as string);
   };
   useEffect(() => {
     mutate();
+    setQuizLeaders(quizHighScores?.scores?.slice(0, 3));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quiz]);
 
   useEffect(() => {
     mutateLb();
+    setLeaders(leaderboard?.users.slice(0, 3));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [leaderboard]);
   return (
@@ -63,17 +70,16 @@ export default function Leaderboard() {
             <div className='h-[59.5px] flex items-center justify-center text-white gap-4 text-2xl'>
               Leaderboard <span className='text-xs'>All quizzes</span>
             </div>
-            <div className='bg-white h-[500px] custScroll-y p-4 rounded-2xl overflow-y-auto'>
-              <div className='text-[#ff5722] mb-4 grid grid-cols-5 font-bold gap-4 justify-between items-center'>
-                <div className='font-semibold'>POS</div>
-                <div className='flex flex-row col-span-3  gap-2 items-center'>NAME</div>
-                <div className='text-right'>SCORE</div>
-              </div>
+            <TopThree data={leaders} />
+            <div className='max-h-[500px] custScroll-y py-4 overflow-y-auto'>
               {leaderboard?.users.map((user: { name: string; totalScore: string }, index: number) => {
                 return (
-                  <div key={user.name} className='text-zinc-700 mb-4 grid grid-cols-5 gap-4 justify-between items-center'>
+                  <div
+                    key={user.name}
+                    className='text-zinc-700 bg-zinc-100 py-2 px-4 rounded-xl shadow-md flex flex-row mb-4  gap-4  items-center'
+                  >
                     <div className='font-semibold'>{index + 1}.</div>
-                    <div className='flex flex-row col-span-3  gap-2 items-center'>
+                    <div className='self-start flex flex-row col-span-3  gap-2 items-center w-full'>
                       <Avatar
                         className='text-xs border-2 border-white border-solid'
                         sx={{ bgcolor: deepOrange[500], width: 36, height: 36 }}
@@ -81,8 +87,8 @@ export default function Leaderboard() {
                         {user.name.charAt(0)}
                       </Avatar>
                       {user.name}
+                      <div className='text-right w-full'>{user.totalScore}</div>
                     </div>
-                    <div className='text-right'>{user.totalScore}</div>
                   </div>
                 );
               })}
@@ -117,35 +123,31 @@ export default function Leaderboard() {
                 </Select>
               </FormControl>
             </Box>
-            <div className='bg-white h-[500px] custScroll-y p-4 rounded-2xl overflow-y-auto'>
+            <TopThreeQuiz data={quizLeaders} />
+            <div className='max-h-[500px] custScroll-y py-4 overflow-y-auto'>
               {isLoading && (
                 <div className='text-white flex flex-col items-center justify-center gap-4 h-full w-full'>
                   <CircularProgress color='warning' size={34} />
                   Loading...
                 </div>
               )}
-              <div className='text-[#ff5722] mb-4 grid grid-cols-5 font-bold gap-4 justify-between items-center'>
-                <div className='font-semibold'>POS</div>
-                <div className='flex flex-row col-span-3  gap-2 items-center'>NAME</div>
-                <div className='text-right'>SCORE</div>
-              </div>
               {quizHighScores?.scores?.map((score: { user: { name: string }; highScore: number }, index: number) => {
                 return (
                   <div
                     key={score.user.name}
-                    className='text-zinc-700 grid grid-cols-5 mb-4  gap-4 justify-between items-center'
+                    className='text-zinc-700 bg-zinc-100 py-2 px-4 rounded-xl shadow-md flex flex-row mb-4  gap-4  items-center'
                   >
-                    <div className='font-semibold'>{index + 1}.</div>
-                    <div className='flex flex-row col-span-3  gap-2 items-center'>
+                    <div className='font-semibold w-5'>{index + 1}.</div>
+                    <div className='self-start flex flex-row col-span-3  gap-2 items-center w-full'>
                       <Avatar
-                        className='text-xs border-2 border-white border-solid '
+                        className='text-xs border-2 border-white border-solid'
                         sx={{ bgcolor: deepOrange[500], width: 36, height: 36 }}
                       >
                         {score.user.name.charAt(0)}
                       </Avatar>
                       {score.user.name}
+                      <div className='text-right w-full'>{score.highScore}</div>
                     </div>
-                    <div className='text-right'>{score.highScore}</div>
                   </div>
                 );
               })}
