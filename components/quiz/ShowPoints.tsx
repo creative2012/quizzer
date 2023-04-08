@@ -1,5 +1,9 @@
 import { GiLaurelsTrophy } from 'react-icons/gi';
 import { AnimatePresence, motion } from 'framer-motion';
+import { Button } from '@mui/material';
+import { useRouter } from 'next/router';
+import { CircularProgress } from '@mui/material';
+import { useState } from 'react';
 
 interface CountdownTimerProps {
   data: Record<string, any>;
@@ -9,6 +13,13 @@ interface CountdownTimerProps {
 }
 
 const ShowPoints: React.FC<CountdownTimerProps> = ({ data, points, medal, isGameOver }) => {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const exit = () => {
+    router.push('/');
+    setIsLoading(true);
+  };
   if (isGameOver) {
     return (
       <AnimatePresence mode='wait'>
@@ -58,6 +69,41 @@ const ShowPoints: React.FC<CountdownTimerProps> = ({ data, points, medal, isGame
                 <GiLaurelsTrophy key='trophy2' color={medal} size={70} />
               </motion.div>
             )}
+            <motion.div
+              key='options'
+              initial={{ y: 50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{
+                opacity: 0,
+                y: 50,
+                transition: { delay: 0, duration: 0.2, ease: 'easeInOut' },
+              }}
+              transition={{
+                delay: 4,
+                duration: 0.5,
+                ease: 'easeInOut',
+                type: 'spring',
+                stiffness: 100,
+              }}
+              className='flex flex-row gap-4'
+            >
+              <Button
+                onClick={() => {}}
+                disabled={false}
+                className='text-zinc-800 bg-white text-lg font-semibold hover:text-white hover:scale-110 transition transform'
+                variant='contained'
+              >
+                Review
+              </Button>
+              <Button
+                onClick={exit}
+                disabled={false}
+                className='text-zinc-800 bg-white text-lg font-semibold hover:text-white hover:scale-110 transition transform'
+                variant='contained'
+              >
+                {isLoading ? <CircularProgress thickness={7} color='inherit' size={24} /> : 'exit'}
+              </Button>
+            </motion.div>
           </div>
         </motion.div>
       </AnimatePresence>

@@ -82,3 +82,8 @@ body::-webkit-scrollbar-thumb {
   border-radius: 10px;
   background-color: #ff8965;
 }
+.awardBack {
+  background-image: url('/assets/award.jpg');
+  background-position: center;
+  background-size: cover;
+}

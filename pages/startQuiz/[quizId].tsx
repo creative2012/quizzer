@@ -93,6 +93,7 @@ export default function Quiz() {
 
   const saveScore = useCallback(async () => {
     setSaved(true);
+    if(points && points > 0){
     setOpen(true);
     let score = 0;
     points != undefined ? (score = Math.floor(points * (timeScore / 5))) : (score = 0 * timeScore);
@@ -107,6 +108,7 @@ export default function Quiz() {
     } catch (error) {
       setisSaving({ msg: 'Error Saving Score', code: 'error' });
     }
+  }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [points, medal, quizId, user?.id]);
 
@@ -226,7 +228,7 @@ export default function Quiz() {
             start={start}
             keyValue={progress.question}
             delay={delay.question}
-            question={data?.question[progress.question].question}
+            question={data?.question[progress.question]?.question}
             gameOver={gameOver}
             msg={'Quiz over! Well done'}
           />

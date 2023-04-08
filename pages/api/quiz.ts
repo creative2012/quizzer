@@ -7,9 +7,12 @@ export default async function handler(
 ) {
   try {
     const quizzes = await prismadb.quiz.findMany({
-      include: {
-        questions: true,
-      },
+      // include: {
+      //   questions: true,
+      // },
+      orderBy:{
+        title: 'asc'
+      }
     });
     res.status(200).json(quizzes);
   } catch (error) {

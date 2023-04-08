@@ -14,6 +14,7 @@ import Avatar from '@mui/material/Avatar';
 import { deepOrange } from '@mui/material/colors';
 import TopThreeQuiz from '@/components/leaderBoard/TopThreeQuiz';
 import TopThree from '@/components/leaderBoard/TopThree';
+import useGetQuizData from '@/hooks/useGetQuizData';
 
 export async function getServerSideProps(context: NextPageContext) {
   const session = await getSession(context);
@@ -32,12 +33,12 @@ export async function getServerSideProps(context: NextPageContext) {
 }
 export default function Leaderboard() {
   const [quiz, setQuiz] = useState('Javascript');
-  const { data: leaderboard, mutate: mutateLb } = useLeaderboard();
+  const { data: leaderboard, isLoading: isLoading2,mutate: mutateLb } = useLeaderboard();
   const [leaders, setLeaders] = useState([{ name: '' }, { name: '' }, { name: '' }]);
   const { data: quizHighScores, isLoading, mutate } = useHighscores(quiz);
   const [quizLeaders, setQuizLeaders] = useState([{ name: '' }, { name: '' }, { name: '' }]);
-  // Call this function whenever you want to
-  // refresh props!
+  const { data: quizData } = useGetQuizData();
+
   useEffect(() => {
     setQuizLeaders(quizHighScores?.scores?.slice(0, 3));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -72,6 +73,12 @@ export default function Leaderboard() {
             </div>
             <TopThree data={leaders} />
             <div className='max-h-[500px] custScroll-y py-4 overflow-y-auto'>
+            {isLoading2 && (
+                <div className='text-white flex flex-col items-center justify-center gap-4 h-full w-full'>
+                  <CircularProgress color='warning' size={34} />
+                  Loading...
+                </div>
+              )}
               {leaderboard?.users.map((user: { name: string; totalScore: string }, index: number) => {
                 return (
                   <div
@@ -108,18 +115,13 @@ export default function Leaderboard() {
                   label='Quiz'
                   onChange={handleChange}
                 >
-                  <MenuItem value={'Javascript'}>Javascript</MenuItem>
-                  <MenuItem value={'Javascript ES6'}>Javascript ES6</MenuItem>
-                  <MenuItem value={'PHP'}>PHP</MenuItem>
-                  <MenuItem value={'Python'}>Python</MenuItem>
-                  <MenuItem value={'Prisma'}>Prisma</MenuItem>
-                  <MenuItem value={'React.js'}>React</MenuItem>
-                  <MenuItem value={'Vue.js'}>Vue</MenuItem>
-                  <MenuItem value={'jQuery'}>jQuery</MenuItem>
-                  <MenuItem value={'Laravel'}>Laravel</MenuItem>
-                  <MenuItem value={'Next.js'}>Next</MenuItem>
-                  <MenuItem value={'MongoDB'}>MongoDB</MenuItem>
-                  <MenuItem value={'Node.js'}>Node</MenuItem>
+                  {quizData?.map((quiz: { id: string; title: string }) => {
+              return (
+                <MenuItem key={quiz.id} value={quiz.title}>
+                  {quiz.title}
+                </MenuItem>
+              );
+            })}
                 </Select>
               </FormControl>
             </Box>

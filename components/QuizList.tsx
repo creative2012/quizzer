@@ -3,13 +3,14 @@ import { isEmpty } from 'lodash';
 import QuizCard from './QuizCard';
 import { motion } from 'framer-motion';
 import { CircularProgress } from '@mui/material';
-import ScrollContainer from 'react-indiana-drag-scroll'
+import ScrollContainer from 'react-indiana-drag-scroll';
+import { FaInfoCircle } from 'react-icons/fa';
 
 interface QuizListProps {
   data: Record<string, any>[];
   title: string;
   loading: boolean;
-  msg?: string
+  msg?: string;
 }
 const boxVariants = {
   initial: { opacity: 0 },
@@ -43,9 +44,16 @@ const QuizList: React.FC<QuizListProps> = ({ data, title, loading, msg }) => {
         damping: 20,
       }}
     >
-      {msg && (        <p key="quizmsg" className="px-10 text-white">{msg}</p>
-)}
-      <ScrollContainer hideScrollbars={false} vertical={false} className='relative custScroll-x px-4 text-white space-y-8 flex flex-row  justify-normal w-screen  pb-8 overflow-x-scroll' >
+      {msg && (
+        <p key='quizmsg' className='flex gap-4 px-10 text-sm items-center text-white'>
+          <FaInfoCircle className="text-6xl cust:text-3xl md:text-3xl lg:text-2xl" /> {msg}
+        </p>
+      )}
+      <ScrollContainer
+        hideScrollbars={false}
+        vertical={false}
+        className='relative custScroll-x px-4 text-white space-y-8 flex flex-row  justify-normal w-screen  pb-8 overflow-x-scroll'
+      >
         {loading && (
           <div className='absolute w-full h-full  text-black flex flex-col items-center justify-center z-50 gap-4 top-0 left-0'>
             <CircularProgress color='warning' size={34} />

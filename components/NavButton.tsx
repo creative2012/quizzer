@@ -4,7 +4,6 @@ import Menu from '@mui/material/Menu';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Logout from '@mui/icons-material/Logout';
 import QuizOutlinedIcon from '@mui/icons-material/QuizOutlined';
-import EmojiEventsOutlinedIcon from '@mui/icons-material/EmojiEventsOutlined';
 import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined';
 import { Divider } from '@mui/material';
 import { deepOrange } from '@mui/material/colors';
@@ -31,7 +30,7 @@ const NavButton = () => {
     <>
       <div className='text-2xl flex flex-row items-center gap-4 text-zinc-800'>
         <Link href='/' className={`${(router.pathname === "/" || router.pathname === "/startQuiz/[quizId]") && "text-white"} hover:scale-110 transition transform cursor-pointer hidden md:block lg:block focus:text-white `}>Quizzes</Link>
-        <Link href='/awards' className={`${router.pathname === "/awards" && "text-white"} hover:scale-110 transition transform cursor-pointer hidden md:block lg:block focus:text-white `}>Awards</Link>
+        {/* <Link href='/awards' className={`${router.pathname === "/awards" && "text-white"} hover:scale-110 transition transform cursor-pointer hidden md:block lg:block focus:text-white `}>Awards</Link> */}
         <Link href='/leaderboard' className={`${router.pathname === "/leaderboard" && "text-white"} hover:scale-110 transition transform cursor-pointer hidden md:block lg:block focus:text-white `}>LeaderBoard</Link>
         <IconButton
           onClick={handleClick}
@@ -91,12 +90,12 @@ const NavButton = () => {
             </ListItemIcon>
             <div className={`${router.pathname === "/" && "text-orange-500"}`}>Quizzes</div>
           </MenuItem>
-          <MenuItem onClick={()=>{router.push('/awards')}}>
+          {/* <MenuItem onClick={()=>{router.push('/awards')}}>
             <ListItemIcon>
               <EmojiEventsOutlinedIcon fontSize='small' />
             </ListItemIcon>
             <div className={`${router.pathname === "/awards" && "text-orange-500"}`}>Awards</div>
-          </MenuItem>
+          </MenuItem> */}
           <MenuItem onClick={()=>{router.push('/leaderboard')}}>
             <ListItemIcon>
               <LeaderboardOutlinedIcon fontSize='small' />
