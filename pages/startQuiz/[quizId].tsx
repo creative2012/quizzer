@@ -235,10 +235,10 @@ export default function Quiz() {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.5, ease: 'easeInOut' }}
-        className='z-50 fixed grid grid-cols-1 grid-rows-8 text-zinc-800 bg-white w-[100vw] h-[100vh]'
+        className='z-50 fixed grid grid-cols-1 grid-rows-6 text-zinc-800 bg-white w-[100vw] h-[100vh]'
       >
         <Hello user={user} />
-        <div className='relative bg-[#fdfdfd] min-h-[220px] text-[#455a64] row-span-2 flex flex-col gap-6 items-center justify-center text-center p-4 shadow-md z-10'>
+        <div className='relative bg-[#fdfdfd]  text-[#455a64] row-span-1 flex flex-col gap-6 p-1 items-center justify-center text-center shadow-md z-10'>
           <QuizTitle data={data} start={start} delay={delay.title} startQuiz={startQuiz} />
           <Questions
             start={start}
@@ -263,7 +263,7 @@ export default function Quiz() {
             value={progress.tracker}
           />
         </div>
-        <div className='flex min-h-[300px] justify-center items-center row-span-2  z-10 '>
+        <div className='flex min-h-[300px] justify-center items-center row-span-3  z-10 '>
           <Answers
             start={start}
             gameOver={gameOver}
@@ -274,7 +274,7 @@ export default function Quiz() {
           />
           <ShowPoints onClick={toggleReview} data={data} points={points} medal={medal} isGameOver={gameOver} />
         </div>
-        <div className='text-center relative bottom-4 self-center text-[#49acaf] h-[50px] Bebas text-6xl'>QUIZZER.</div>
+        <div className='text-center row-span-1 relative bottom-0 self-center text-[#49acaf] h-[50px] Bebas text-6xl'>QUIZZER.</div>
       </motion.div>
       <Snackbar open={open} autoHideDuration={5000} onClose={handleClose} action={action}>
         <Alert onClose={handleClose} severity={isSaving.code} sx={{ width: '100%' }}>
