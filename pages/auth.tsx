@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { getSession } from 'next-auth/react';
 import { NextPageContext } from 'next';
 import LoginSignupElement from '@/components/LoginSignupElement';
@@ -30,10 +30,13 @@ const videoOption = {
 export default function Auth() {
  
   return (
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.7, ease: 'easeInOut' }} className=' text-zinc-700 bg-white' >
+    <div className=" w-screen h-screen z-50 bg-zinc-800">
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.7, ease: 'easeInOut' }} className=' text-zinc-70' >
+        <AnimatePresence>
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ delay: 0.4, duration: 0.7, ease: 'easeInOut' }} className='absolute top-0 h-full overflow-hidden' >
           <video {...videoOption} muted autoPlay loop playsInline disablePictureInPicture></video>
         </motion.div>
+        </AnimatePresence>
         <header className='bg-transparent fixed top-8 left-8 Bebas  text-7xl text-white z-10'><h1>{'{ QUIZZER. }'}</h1></header>
         <section>
           <LoginSignupElement />
@@ -42,5 +45,6 @@ export default function Auth() {
           <p>A selection of coding tests covering some of the most popular languages and frameworks</p>
         </footer>
       </motion.div>
+      </div>
   );
 }
