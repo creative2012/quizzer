@@ -28,7 +28,8 @@ const videoOption = {
   loop: true,
   src: '/assets/women2.webm',
   playsinline: true,
-  disablePictureInPicture: true
+  disablePictureInPicture: true,
+  controls: true
 };
 
 export default function Auth() {
