@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { isEmpty } from 'lodash';
 import QuizCard from './QuizCard';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { CircularProgress } from '@mui/material';
 import ScrollContainer from 'react-indiana-drag-scroll';
 import { FaInfoCircle } from 'react-icons/fa';
@@ -28,6 +28,7 @@ const QuizList: React.FC<QuizListProps> = ({ data, title, loading, msg }) => {
   }
 
   return (
+    <AnimatePresence mode="wait">
     <motion.div
       key={title}
       initial={{ opacity: 0 }}
@@ -79,6 +80,7 @@ const QuizList: React.FC<QuizListProps> = ({ data, title, loading, msg }) => {
         </div>
       </ScrollContainer>
     </motion.div>
+    </AnimatePresence>
   );
 };
 
