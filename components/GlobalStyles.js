@@ -1,5 +1,10 @@
 // eslint-disable-next-line import/no-anonymous-default-export
-export default `
+import React from 'react';
+import { Global, css } from '@emotion/react';
+
+const GlobalStyles = () => (
+  <Global
+    styles={css`
 body{
 display: block;
 overflow:hidden;
@@ -57,5 +62,10 @@ overflow:hidden;
   -ms-transform: rotate(360deg);
   -o-transform: rotate(360deg);
   transform: rotate(360deg);
- }
-}`;
+}
+}
+`}
+  />
+);
+
+export default GlobalStyles;
