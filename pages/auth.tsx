@@ -22,7 +22,7 @@ export async function getServerSideProps(context: NextPageContext) {
 }
 
 const videoOption = {
-  className: 'h-[100vh] w-[100vw] object-cover cust:object-top ',
+  className: 'h-[100vh] w-[100vw] object-cover cust:object-top bg-black ',
   src: '/assets/women2.mp4',
   poster:'/assets/default.png'
 };
