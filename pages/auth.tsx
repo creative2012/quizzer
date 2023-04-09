@@ -27,6 +27,7 @@ const videoOption = {
   muted: true,
   loop: true,
   src: '/assets/women2.webm',
+  playsinline: true
 };
 
 export default function Auth() {
