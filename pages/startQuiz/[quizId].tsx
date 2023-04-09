@@ -75,8 +75,9 @@ export default function Quiz() {
       const { questions, ...rest } = shuffleData;
       const shuffledQuestions = [...questions];
 
-      shuffledQuestions.sort(() => Math.random() - 0.5).slice(0, 10);
-      shuffledQuestions.push({
+      shuffledQuestions.sort(() => Math.random() - 0.5);
+      let questionsSet = shuffledQuestions.slice(0, 10);
+      questionsSet.push({
         question: '',
         answers: [],
         correct: '',
@@ -86,7 +87,7 @@ export default function Quiz() {
 
       setData({
         ...rest,
-        question: shuffledQuestions,
+        question: questionsSet,
       });
     }
   }, [shuffleData]);
@@ -171,10 +172,10 @@ export default function Quiz() {
         setMedal('#FFD700');
       } else if (percentageCorrect >= 70) {
         setMedal('#C0C0C0');
-      } else if (percentageCorrect == 0) {
-        setMedal('white');
-      } else {
+      } else if (percentageCorrect >= 50) {
         setMedal('#CD7F32');
+      } else {
+        setMedal('white');
       }
 
       setPoints(correctAnswers);
