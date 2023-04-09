@@ -91,7 +91,7 @@ const ShowPoints: React.FC<CountdownTimerProps> = ({ data, points, medal, isGame
               <Button
                 onClick={onClick}
                 disabled={false}
-                className='text-zinc-800 bg-white text-lg font-semibold hover:text-white hover:scale-110 transition transform'
+                className='text-zinc-800 bg-white hover:bg-blue-500 text-lg font-semibold hover:text-white hover:scale-110 transition transform'
                 variant='contained'
               >
                 Review
@@ -99,7 +99,7 @@ const ShowPoints: React.FC<CountdownTimerProps> = ({ data, points, medal, isGame
               <Button
                 onClick={exit}
                 disabled={false}
-                className='text-zinc-800 bg-white text-lg font-semibold hover:text-white hover:scale-110 transition transform'
+                className='text-zinc-800 bg-white hover:bg-blue-500 text-lg font-semibold hover:text-white hover:scale-110 transition transform'
                 variant='contained'
               >
                 {isLoading ? <CircularProgress thickness={7} color='inherit' size={24} /> : 'exit'}

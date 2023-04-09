@@ -74,7 +74,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ initialTime, onComplete
           <Button
             onClick={handleStart}
             disabled={isRunning}
-            className='text-zinc-800 bg-white text-lg font-semibold hover:text-white hover:scale-110 transition transform'
+            className='text-zinc-800 bg-white hover:bg-blue-500 text-lg font-semibold hover:text-white hover:scale-110 transition transform'
             variant='contained'
           >
             ready?
@@ -82,7 +82,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ initialTime, onComplete
           <Button
             onClick={exit}
             disabled={false}
-            className='text-zinc-800 bg-white text-lg font-semibold hover:text-white hover:scale-110 transition transform'
+            className='text-zinc-800 bg-white hover:bg-blue-500 text-lg font-semibold hover:text-white hover:scale-110 transition transform'
             variant='contained'
           >
             {isLoading ? <CircularProgress thickness={7} color='inherit' size={24} /> : 'exit'}
