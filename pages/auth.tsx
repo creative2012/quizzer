@@ -26,7 +26,7 @@ const videoOption = {
   autoPlay: true,
   muted: true,
   loop: true,
-  src: '/assets/women2.webm',
+  src: '/assets/women2.mp4',
   playsinline: true,
   disablePictureInPicture: true,
   controls: true
