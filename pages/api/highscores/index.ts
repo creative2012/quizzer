@@ -28,6 +28,9 @@ export default async function handler(
       name: true,
       scores: { select: { highScore: true } },
     },
+    where: { 
+      scores: { some: { highScore: { gt: 0 } } } 
+    },
   });
 
   const usersWithTotalScores: UserWithTotalScore[] = users.map((user) => {
@@ -43,3 +46,4 @@ export default async function handler(
   const apiResponse: ApiResponse = { users: usersWithTotalScores };
   res.status(200).json(apiResponse);
 }
+
