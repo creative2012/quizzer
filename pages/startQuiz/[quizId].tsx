@@ -34,7 +34,7 @@ export default function Quiz() {
     question: [
       {
         question: '',
-        answers: ['1'],
+        answers: ['A','B','C','D'],
         correct: '',
         id: '',
         quizId: '',
@@ -46,7 +46,6 @@ export default function Quiz() {
   } = useRouter();
   const { data: user } = useCurrentUser();
   const { data: shuffleData, isLoading } = useQuiz(quizId as string);
-  console.log(shuffleData);
   const [isRunning, setIsRunning] = useState(false);
   const [saved, setSaved] = useState(false);
   const [points, setPoints] = useState<number>();
@@ -58,6 +57,7 @@ export default function Quiz() {
   const [start, setStart] = useState(false);
   const [timeLeft, setTimeLeft] = useState(100);
   const [answers, setAnswers] = useState<string[]>([]);
+  const [wrongAnswers, setWrongAnswers] = useState<number[]>([]);
   const [gameOver, setGameOver] = useState(false);
   const [timeScore, setTimeScore] = useState(0);
   const [isSaving, setisSaving] = useState<{ msg: string; code: SavingCode }>({
@@ -94,24 +94,27 @@ export default function Quiz() {
 
   const saveScore = useCallback(async () => {
     setSaved(true);
-    if(points && points > 0){
-    setOpen(true);
-    let score = 0;
-    points != undefined ? (score = Math.floor(points * (timeScore / 5))) : (score = 0 * timeScore);
-    try {
-      const response = await axios.post('/api/saveScore', {
-        userId: user?.id,
-        quizId,
-        score: score,
-        medal,
-      });
-      setisSaving({ msg: response.data.message, code: response.data.message === "You didnt beat your highscore this time" ? 'info' : 'success' });
-    } catch (error) {
-      setisSaving({ msg: 'Error Saving Score', code: 'error' });
+    if (points && points > 0) {
+      setOpen(true);
+      let score = 0;
+      points != undefined ? (score = Math.floor(points * (timeScore / 5))) : (score = 0 * timeScore);
+      try {
+        const response = await axios.post('/api/saveScore', {
+          userId: user?.id,
+          quizId,
+          score: score,
+          medal,
+        });
+        setisSaving({
+          msg: response.data.message,
+          code: response.data.message === 'You didnt beat your highscore this time' ? 'info' : 'success',
+        });
+      } catch (error) {
+        setisSaving({ msg: 'Error Saving Score', code: 'error' });
+      }
     }
-  }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [points, medal, quizId, user?.id]);
+
+  }, [points, medal, quizId, timeScore, setSaved, setOpen, user?.id, setisSaving]);
 
   useEffect(() => {
     if (gameOver && !saved) {
@@ -119,7 +122,7 @@ export default function Quiz() {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [points, saveScore]);
+  }, [points]);
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
@@ -135,8 +138,7 @@ export default function Quiz() {
     };
   }, [isRunning, timeLeft]);
 
-  const handleOption = useCallback(
-    (e: string) => {
+  const handleOption = (e: string) => {
       setIsRunning(false);
       const nextQuestion = progress.question + 1;
       const tracker = progress.tracker + 100 / (data?.question.length - 1);
@@ -151,9 +153,8 @@ export default function Quiz() {
         setIsRunning(false);
         setGameOver(true);
       }
-    },
-    [data?.question.length, progress.question, progress.tracker, timeLeft, timeScore]
-  );
+    }
+
 
   useEffect(() => {
     if (gameOver) {
@@ -163,6 +164,8 @@ export default function Quiz() {
       answers.map((answer, index) => {
         if (answer === data?.question[index].correct) {
           correctAnswers++;
+        } else {
+          setWrongAnswers([...wrongAnswers, index]);
         }
       });
 
@@ -180,15 +183,17 @@ export default function Quiz() {
 
       setPoints(correctAnswers);
     }
-  }, [answers, data?.question, gameOver, saveScore]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gameOver]);
 
   useEffect(() => {
     if (timeLeft === 0) {
       setTimeLeft(timeLeft + 2);
       handleOption('timeOut');
     }
-  }, [timeLeft, handleOption]);
-  
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timeLeft]);
+
   const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
       return;
