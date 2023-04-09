@@ -27,7 +27,7 @@ const QuizTitle: React.FC<QuizTitleProps> = ({ data, start, delay, startQuiz }) 
                 type: 'spring',
                 stiffness: 100,
               }}
-              className={`${start ? 'absolute top-5 left-5 text-3xl' : 'text-5xl' } text flex flex-col gap-4 font-semibold Bebas transition`}
+              className={`${start ? 'absolute -top-10 left-5 text-3xl text-white' : 'text-5xl' } text flex flex-col gap-4 font-semibold Bebas transition`}
             >
              <h1> {data?.title} </h1>
               {!start &&  <CountdownTimer initialTime={3} onComplete={startQuiz} />}

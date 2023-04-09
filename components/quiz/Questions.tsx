@@ -12,6 +12,24 @@ interface QuestionsProps {
 }
 const Questions: React.FC<QuestionsProps> = ({ keyValue, delay, question, gameOver, msg, start }) => {
   if (start) {
+    const codeSnippetRegex: RegExp = /<snip>(.*?)<\/snip>/gs;
+    const formattedQuestion: JSX.Element = (
+      <div
+        dangerouslySetInnerHTML={{
+          __html: question.replace(codeSnippetRegex, (match: string, code: string) => {
+            const formattedCode: string = code
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;')
+              .replace(/\n/g, '<br/>')
+              .replace(/^\s+/gm, (match: string) => {
+                return ' '.repeat(match.length);
+              });
+            return `<pre class="bg-zinc-700 text-white text-left rounded-md text-xs p-4"><code class="language-jsx">${formattedCode}</code></pre>`;
+          }),
+        }}
+      ></div>
+    );
+
     return (
       <AnimatePresence mode='wait'>
         <motion.div
@@ -37,9 +55,9 @@ const Questions: React.FC<QuestionsProps> = ({ keyValue, delay, question, gameOv
             stiffness: 260,
             damping: 20,
           }}
-          className='self-center text-2xl flex flex-row items-center gap-6'
+          className='self-center text-lg flex flex-row items-center gap-6'
         >
-          <div key={'Q' + keyValue + 1}>{question}</div>
+          <div key={'Q' + keyValue + 1}>{formattedQuestion}</div>
           {gameOver && (
             <motion.div
               key={'Q' + keyValue}
@@ -56,7 +74,7 @@ const Questions: React.FC<QuestionsProps> = ({ keyValue, delay, question, gameOv
               }}
               className='self-center text-2xl flex flex-col items-center justify-center gap-6'
             >
-             {msg}
+              {msg}
             </motion.div>
           )}
         </motion.div>
