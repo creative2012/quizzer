@@ -3,6 +3,7 @@ import React from 'react';
 import { NextPageContext } from 'next';
 import { getSession } from 'next-auth/react';
 import useQuizList from '@/hooks/useQuizList';
+import { AnimatePresence } from 'framer-motion';
 
 export async function getServerSideProps(context: NextPageContext) {
   const session = await getSession(context);
@@ -29,11 +30,13 @@ export default function Home() {
   return (
       <section>
         <div className={`h-[150px]`}></div>
+        <AnimatePresence>
         <QuizList title={'Languages'} data={languages} loading={isLang} msg="Each Quiz gives you 10 random questions to answer within a time limit, from a larger pool of questions on each topic." />
         <QuizList title={'Librarys'} data={librarys} loading={isFrame} />
         <QuizList title={'Frameworks'} data={frameworks} loading={isLib} />
         <QuizList title={'Databases'} data={databases} loading={isDB} />
         <QuizList title={'Runtime Environments'} data={runtime} loading={isRun} />
+        </AnimatePresence>
       </section>
   );
 }
