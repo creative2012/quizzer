@@ -174,14 +174,14 @@ const LoginSignupElement = () => {
             loadingPosition='end'
           >
             {option ? (
-              <span>{isLoading ? 'Signing in...' : 'Signup'}</span>
+              <span>{isLoading ? 'Signing in...'  : 'Signup'}</span>
             ) : (
               <span>{isLoading ? 'Logining in...' : 'Login'}</span>
             )}
           </LoadingButton>
 
           <div className='Poppins flex flex-row gap-2 text-sm'>
-            {option ? 'Already Have an account?' : 'No account?'}{' '}
+            {option ? 'Already Have an account?' : 'No account?'}
             <div
               onClick={toggleVariant}
               className='font-semibold cursor-pointer transition transform hover:scale-110 underline'
