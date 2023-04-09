@@ -7,7 +7,7 @@ const GlobalStyles = () => (
     styles={css`
 body{
 display: block;
-overflow:hidden;
+
 }
 #globalLoader{
     position: fixed;
