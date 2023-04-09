@@ -14,6 +14,7 @@ import Hello from '@/components/quiz/Hello';
 import QuizTitle from '@/components/quiz/QuizTitle';
 import Questions from '@/components/quiz/Questions';
 import Answers from '@/components/quiz/Answers';
+import Review from '@/components/quiz/Review';
 
 export default function Quiz() {
   type SavingCode = 'success' | 'info' | 'warning' | 'error' | undefined;
@@ -57,7 +58,8 @@ export default function Quiz() {
   const [start, setStart] = useState(false);
   const [timeLeft, setTimeLeft] = useState(100);
   const [answers, setAnswers] = useState<string[]>([]);
-  const [wrongAnswers, setWrongAnswers] = useState<number[]>([]);
+  const [wrongAnswers, setWrongAnswers] = useState<any[]>([]);
+  const [isOpen, setIsOpen] =useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [timeScore, setTimeScore] = useState(0);
   const [isSaving, setisSaving] = useState<{ msg: string; code: SavingCode }>({
@@ -157,17 +159,20 @@ export default function Quiz() {
 
 
   useEffect(() => {
-    if (gameOver) {
+    if (gameOver && answers.length > 0) {
       let totalQuestions = data?.question.length - 1;
       let correctAnswers = 0;
+      let wrongAnswers = [];
 
-      answers.map((answer, index) => {
-        if (answer === data?.question[index].correct) {
+      for (let i = 0; i < data.question.length -1; i++) {
+        if (answers[i] === data.question[i].correct) {
           correctAnswers++;
         } else {
-          setWrongAnswers([...wrongAnswers, index]);
+          wrongAnswers.push({ question: data.question[i].question, correct: data.question[i].correct });
         }
-      });
+      }
+      
+      setWrongAnswers(wrongAnswers);
 
       let percentageCorrect = (correctAnswers / totalQuestions) * 100;
 
@@ -182,6 +187,8 @@ export default function Quiz() {
       }
 
       setPoints(correctAnswers);
+    } else {
+      setPoints(0);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameOver]);
@@ -201,6 +208,9 @@ export default function Quiz() {
 
     setOpen(false);
   };
+  const toggleReview = () =>{
+    setIsOpen(!isOpen);
+  }
   const action = (
     <div>
       <IconButton size='small' aria-label='close' color='inherit' onClick={handleClose}>
@@ -262,7 +272,7 @@ export default function Quiz() {
             answers={data?.question[progress.question]?.answers}
             onClick={handleOption}
           />
-          <ShowPoints data={data} points={points} medal={medal} isGameOver={gameOver} />
+          <ShowPoints onClick={toggleReview} data={data} points={points} medal={medal} isGameOver={gameOver} />
         </div>
         <div className='text-center relative bottom-4 self-center text-[#49acaf] h-[50px] Bebas text-6xl'>QUIZZER.</div>
       </motion.div>
@@ -271,6 +281,9 @@ export default function Quiz() {
           {isSaving.msg}
         </Alert>
       </Snackbar>
+      
+      <Review isOpen={isOpen} onClose={toggleReview} questions={wrongAnswers}/>
+      
     </>
   );
 }

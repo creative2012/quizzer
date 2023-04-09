@@ -10,9 +10,10 @@ interface CountdownTimerProps {
   points: number | undefined;
   medal: string;
   isGameOver: boolean;
+  onClick: () => void;
 }
 
-const ShowPoints: React.FC<CountdownTimerProps> = ({ data, points, medal, isGameOver }) => {
+const ShowPoints: React.FC<CountdownTimerProps> = ({ data, points, medal, isGameOver, onClick }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -88,7 +89,7 @@ const ShowPoints: React.FC<CountdownTimerProps> = ({ data, points, medal, isGame
               className='flex flex-row gap-4'
             >
               <Button
-                onClick={() => {}}
+                onClick={onClick}
                 disabled={false}
                 className='text-zinc-800 bg-white text-lg font-semibold hover:text-white hover:scale-110 transition transform'
                 variant='contained'
