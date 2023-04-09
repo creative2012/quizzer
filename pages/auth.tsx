@@ -29,7 +29,7 @@ const videoOption = {
   src: '/assets/women2.mp4',
   playsinline: true,
   disablePictureInPicture: true,
-  controls: true
+  
 };
 
 export default function Auth() {
