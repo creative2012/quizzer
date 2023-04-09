@@ -25,7 +25,7 @@ const Review: React.FC<HelloProps> = ({ questions, isOpen, onClose }) => {
             duration: 0.5,
             ease: 'easeInOut',
           }}
-          className='bg-white absolute top-0 left-0 w-full  z-50 flex flex-col gap-4 text-zinc-700 p-8'
+          className='bg-white absolute min-h-screen top-0 left-0 w-full  z-50 flex flex-col gap-4 text-zinc-700 p-8'
         >
           <div onClick={onClose} className='absolute top-4 right-4 text-2xl cursor-pointer transition transform hover:scale-110'>
             X
