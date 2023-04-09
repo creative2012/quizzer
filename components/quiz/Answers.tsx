@@ -38,7 +38,15 @@ const Answers: React.FC<AnswerProps> = ({ onClick, delay, answers, keyValue, sta
           {answers.map((answer, index) => (
             <div
               key={alphabet[index] + keyValue}
-              onClick={() => onClick(answer)}
+              onClick={(e) => {
+                onClick(answer);
+                // Remove the hover effect after 500ms on touch devices
+                if ("ontouchstart" in document.documentElement) {
+                  setTimeout(() => {
+                    e.currentTarget.classList.remove("hover");
+                  }, 200);
+                }
+              }}
               className='group hover:bg-[#ff5722] cursor-pointer noTrans text-sm relative grid grid-cols-6 gap-2 items-center justify-center shadow-md p-4 rounded-md bg-[#455a64]  text-white hover:shadow-lg transition transform hover:scale-110'
             >
               <div className='font-bold'>{alphabet[index]}</div>
