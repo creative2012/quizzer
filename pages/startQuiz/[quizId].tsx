@@ -235,10 +235,10 @@ export default function Quiz() {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.5, ease: 'easeInOut' }}
-        className='z-50 fixed grid grid-cols-1 grid-rows-6 text-zinc-800 bg-white w-[100vw] h-[100vh]'
+        className='z-50 fixed grid grid-cols-1 grid-rows-6 text-zinc-800 bg-white w-screen h-screen'
       >
         <Hello user={user} />
-        <div className='relative bg-[#fdfdfd]  text-[#455a64] row-span-1 flex flex-col gap-6  p-4 items-center justify-center text-center shadow-md z-10'>
+        <div className='relative bg-[#fdfdfd] min-h-[160px] text-[#455a64] row-span-1 flex flex-col gap-6  p-4 items-center justify-center text-center shadow-md z-10'>
           <QuizTitle data={data} start={start} delay={delay.title} startQuiz={startQuiz} />
           <Questions
             start={start}
