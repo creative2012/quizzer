@@ -23,12 +23,7 @@ export async function getServerSideProps(context: NextPageContext) {
 
 const videoOption = {
   className: 'h-[100vh] w-[100vw] object-cover cust:object-top ',
-  autoPlay: true,
-  muted: true,
-  loop: true,
   src: '/assets/women2.mp4',
-  playsinline: true,
-  disablePictureInPicture: true,
   
 };
 
@@ -37,7 +32,7 @@ export default function Auth() {
   return (
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.7, ease: 'easeInOut' }} className=' text-zinc-700 bg-white' >
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ delay: 0.4, duration: 0.7, ease: 'easeInOut' }} className='absolute top-0 h-full overflow-hidden' >
-          <video {...videoOption} ></video>
+          <video {...videoOption} muted autoPlay loop playsInline disablePictureInPicture></video>
         </motion.div>
         <header className='bg-transparent fixed top-8 left-8 Bebas  text-7xl text-white z-10'><h1>{'{ QUIZZER. }'}</h1></header>
         <section>
